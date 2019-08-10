@@ -1,0 +1,131 @@
+{% extends 'connexion/base_profil.html' %}
+{% load static %}
+
+
+	{% block profil %}
+
+				<div class="col-lg-6">
+								<div class="central-meta">
+									<div class="editing-info">
+										<h5 class="f-title"><i class="ti-info-alt"></i> Editer Information Génerale</h5>
+										<form action="{% url 'profil-edit-info-action' %}" method="post" class="formcomp" >{% csrf_token %}
+											<div class="form-group">	
+											  <input type="text" id="input" name="username" value = {{user.username}} required="required"/>
+											  <label class="control-label" for="input">Nom d'utilisateur</label><i class="mtrl-select"></i>
+											</div>
+											<div class="form-group half">	
+											  <input type="text" id="input" name="nom" value = {{user.first_name}} required="required"/>
+											  <label class="control-label" for="input">Nom</label><i class="mtrl-select"></i>
+											</div>
+											<div class="form-group half">	
+											  <input type="text" name="prenom" value = "{{user.last_name}}" required="required"/>
+											  <label class="control-label" for="input">Prenom</label><i class="mtrl-select"></i>
+											</div>
+											<div class="form-group">	
+											  <input type="text" name="mail" value={{user.email}} required="required"/>
+											  <label class="control-label" for="input"><a href="https://wpkixx.com/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="4b0e262a22270b">Email</a></label><i class="mtrl-select"></i>
+											</div>
+											<div class="form-group">
+											  <input type="text" name="phone" value={{phone}} />
+											  <label class="control-label" for="input">Numero de Téléphone</label><i class="mtrl-select"></i>
+											</div>
+											<div class="dob">
+												<div class="form-group">
+													<select name='jour'>
+														<option>{{info_user.jour}}</option>
+														{% for day in days %}
+														  <option>{{day}}</option>
+														{% endfor %}
+													</select>
+												</div>
+												<div class="form-group">
+													<select name='mois'>
+													<option>{{info_user.mois}}</option>
+														  <option value=1>Jan</option>
+														  <option value=2>Feb</option>
+														  <option value=3>Mar</option>
+														  <option value=4>Apr</option>
+														  <option value=5>May</option>
+														  <option value=6>Jun</option>
+														  <option value=7>Jul</option>
+														  <option value=8>Aug</option>
+														  <option value=9>Sep</option>
+														  <option value=10>Oct</option>
+														  <option value=11>Nov</option>
+														  <option value=12>Dec</option>
+													</select>
+												</div>
+												<div class="form-group">
+													<select name='annee'>
+													<option>{{info_user.annee}}</option>
+													  {% for year in years %}
+													  <option>{{year}}</option>
+													  {% endfor %}
+													</select>
+												</div>
+											</div>
+											<div class="form-radio">
+											 {% if info_user.sexe == 'F' %}
+											  <div class="radio">
+												<label>
+												  <input type="radio" value="M" name="radio"><i class="check-box"></i>Homme
+												</label>
+											  </div>
+											  <div class="radio">
+												<label>
+												  <input type="radio" checked="checked" value='F' name="radio"><i class="check-box"></i>Femme
+												</label>
+											  </div>
+											  {% else %}
+												<div class="radio">
+												<label>
+												  <input type="radio" checked="checked" value="M" name="radio"><i class="check-box"></i>Homme
+												</label>
+											  	</div>
+											  	<div class="radio">
+												<label>
+												  <input type="radio" value='F' name="radio"><i class="check-box"></i>Femme
+												</label>
+												</div>
+												{% endif %}
+											</div>
+											<br>
+											<div class="form-group">	
+											  <input type="text" name="adresse" placeholder="ex: Ambatoroka" value="{{info_user.adresse}}" />
+											  <label class="control-label" for="input">Adresse</label><i class="mtrl-select"></i>
+											</div>
+											<div class="form-group">
+												<select name="ville">
+											{% if info_user.ville == '' or info_user.ville is None %}	
+											  		<option value="Ville" >Ville</option>
+											{% else %}
+													<option>{{info_user.ville}}</option>
+													<option>Ville</option>
+											{% endif %}
+													<option>Antananrivo</option>
+													<option>Ƭoamasina</option>
+													<option>Mahajanga</option>
+													<option>Toliara</option>
+													<option>Fianarantsoa</option>
+													<option>Anstiranana</option>
+												  									  
+											  </select>
+											</div>
+											<p>
+											<div class="form-group">	
+											  <textarea rows="4" name="bio" id="textarea">{{info_user.biographie}}</textarea>
+											  <label class="control-label" for="textarea">Biographie</label><i class="mtrl-select"></i>
+											</div>
+											<div class="submit-btns">
+												<button type="button" Onclick="window.location='{% url 'profil-info' user.username %}'" class="mtr-btn"><span>Annuler</span></button>
+												<button type="submit" class="mtr-btn"><span>Mettre à jour</span></button>
+											</div>
+										</form>
+									</div>
+								</div>	
+							</div><!-- centerl meta -->
+
+	{% endblock %}
+
+
+
