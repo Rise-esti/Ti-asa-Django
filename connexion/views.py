@@ -1,13 +1,31 @@
-from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse, Http404
-from django.shortcuts import redirect
+from django.shortcuts import render, get_object_or_404, redirect
+from django.http import HttpResponse, Http404, HttpResponseRedirect
+from django.urls import reverse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from .models import Profil
-import random, datetime, time
+from .models import Profil, Formation
+import random, datetime, time, os
 
 # Create your views here.
+def getImage(request, ino):
+    upload_file(request, ino)
+    return HttpResponseRedirect(reverse('profil-info', args=[request.user.username]))
+
+
+def upload_file(req, ino):
+    if ino == 'profil':
+        with open('connexion/static/connexion/images/Picture/profil/'+str(req.user.id)+'_'+str(time.time())+'.png', 'wb+') as destination:
+            for chunk in req.FILES.get('pdp-file').chunks():
+                destination.write(chunk)
+        Profil.objects.filter(username_id=req.user.id).update(profilpic='connexion/images/Picture/profil/'+str(req.user.id)+'_'+str(time.time())+'.png')
+
+    elif  ino == 'cover':
+        with open('connexion/static/connexion/images/Picture/cover/'+str(req.user.id)+'_'+str(time.time())+'.png', 'wb+') as destination:
+            for chunk in req.FILES.get('pdc-file').chunks():
+                destination.write(chunk)
+        Profil.objects.filter(username_id=req.user.id).update(coverpic='connexion/images/Picture/cover/'+str(req.user.id)+'_'+str(time.time())+'.png')
+
 
     
 def connect(request):
@@ -36,21 +54,6 @@ def deconnect(request):
     return redirect(home)
 
 
-def apropos(request, username):
-    nbr = random.choice((2, 1, 1, 3, 1, 1, 4, 5, 1))
-    p = Personne.objects.get(username=username)
-    couleurs = {
-    'FF0000':'rouge', 
-    'ED7F10':'orange', 
-    'FFFF00':'jaune', 
-    '00FF00':'vert', 
-    '0000FF':'bleu', 
-    '4B0082':'indigo', 
-    '660099':'violet',
-    }
-    return render(request, 'connexion/apropos.html', {'nbr': nbr, 'prenom': p.prenom, 'nom': p.nom, 'couleurs': couleurs})
-
-
 def create_account(request):
     if (request.POST.get('password') == (request.POST.get('password_conf'))):
         username = request.POST.get('nom').lower()+str(int(time.time()))
@@ -72,14 +75,14 @@ def index(request):
 
 @login_required
 def home(request):
-    info_user = Profil.objects.get(username_id=request.user.id)
-    return render(request, 'connexion/home.html', {'info_user': info_user})
+    info_user = Profil.objects.get(username_id=request.user.id)                 
+    return render(request, 'connexion/home.html', locals())
 
 
 @login_required
 def profilEdit(request):
-    profil = Profil.objects.get(username_id=request.user.id)
-    user = User.objects.get(id=request.user.id)
+    profil = Profil.objects.filter(username_id=request.user.id)[0]
+    user = User.objects.filter(id=request.user.id)[0]
     day, month, year = [], [], []
     # jour 
     for y in range(1, 32):
@@ -98,11 +101,11 @@ def profilEdit(request):
 
     try:
         profil.jour = profil.dateNaissance.strftime("%d")
-        profil.mois = profil.dateNaissance.strftime("%b")
+        profil.moisl, profil.moisn = profil.dateNaissance.strftime("%b"), profil.dateNaissance.strftime("%m")
         profil.annee = profil.dateNaissance.strftime("%Y")
     except:
         profil.jour = 'Jour'
-        profil.mois = 'Mois'
+        profil.moisl, profil.moisn = 'Mois', 'Mois'
         profil.annee = 'Annee'
     
     if profil.adresse is None:
@@ -113,9 +116,43 @@ def profilEdit(request):
     
     profil.prenom = user.last_name.split(' ')[0]
 
-    context = {'user': user, 'years': year, 'days': day, 'info_user': profil, 'phone':phone}
-    return render(request, 'connexion/edit-profile.html', context)
+    context = {'user_viewed': user, 'years': year, 'days': day,
+    'info_user_viewed': profil,
+    'info_user':profil,
+    'phone':phone,
+    'moded':'active'
+    }
+    return render(request, 'connexion/profil/edit-profile.html', context)
 
+
+@login_required
+def formationEdit(request, id):
+    user_viewed = get_object_or_404(User, username=request.user.username)
+    info_user_viewed = Profil.objects.get(username_id=user_viewed.id)
+    info_user = Profil.objects.get(username_id=request.user.id)
+    moded ='active'
+    years = [x for x in range(int(datetime.datetime.today().strftime('%Y')) + 1, 1980, -1)]
+
+    user_formation = Formation.objects.get(pk=id)
+
+    return render(request, 'connexion/profil/formation-profil-edit.html', locals())
+
+
+@login_required
+def formationAdd(request):
+    user_viewed = get_object_or_404(User, username=request.user.username)
+    info_user_viewed = Profil.objects.get(username_id=user_viewed.id)
+    info_user = Profil.objects.get(username_id=request.user.id)
+    try:
+        formation_user_viewed = Profil.objects.filter(username_id=user_viewed.id)
+    except:
+        pass
+
+    moded ='active'
+    years = [x for x in range(int(datetime.datetime.today().strftime('%Y')) + 1, 1980, -1)]
+
+    return render(request, 'connexion/profil/formation-profil-add.html', locals())
+    
 
 def infoProfilEdit(request):
     User.objects.filter(id=request.user.id).update(username=request.POST.get('username'),
@@ -132,7 +169,7 @@ def infoProfilEdit(request):
         pass
     else:
         try:
-            dateNaissance=datetime.date(int(request.POST.get('annee')), int(request.POST.get('mois')), int(request.POST.get('jour')))
+            dateNaissance=datetime.date(int(request.POST.get('annee')), int(request.POST.get('mois')), int(request.POST.get('jour'))).strftime('%Y-%m-%d')
         except:
             dateNaissance = None
         finally:
@@ -141,17 +178,83 @@ def infoProfilEdit(request):
             biographie = request.POST.get('bio'),
             sexe = request.POST.get('radio'),
             ville = request.POST.get('ville'),
-            dateNaissance=dateNaissance
+            dateNaissance=dateNaissance,
+            poste=request.POST.get('poste'),
+            lieu=request.POST.get('lieu')
             )
     return redirect(profilInfo, username=request.user.username)
 
+
+def infoFormationEdit(request):
+    if request.POST.get('lieu') != '':
+        try:
+            int(request.POST.get('Annee_deb'))
+        except:
+            return HttpResponse("Il faut entrer l'annee de debut")
+        else:
+            Formation.objects.filter(pk=request.POST.get('id')).update(lieu = request.POST.get('lieu'),
+            mois_debut = request.POST.get('Mois_deb'),
+            annee_debut = request.POST.get('Annee_deb'),
+            mois_fin = request.POST.get('Mois_fin'),
+            annee_fin = request.POST.get('Annee_fin'),
+            filiere = request.POST.get('filiere'),
+            niveau = request.POST.get('niveau'),
+            obtention = request.POST.get('obtention')
+            )
+            return redirect(formationInfo, username=request.user.username)
+    else:
+        return HttpResponse("Il faut entrer le lieu du formation")
+
+    
+def infoFormationAdd(request):
+    if request.POST.get('lieu') != '':
+        try:
+            int(request.POST.get('Annee_deb'))
+        except:
+            return HttpResponse("Il faut entrer l'annee de debut")
+        else:
+            Formation(username_id=request.user.id,
+            lieu = request.POST.get('lieu'),
+            mois_debut = request.POST.get('Mois_deb'),
+            annee_debut = request.POST.get('Annee_deb'),
+            mois_fin = request.POST.get('Mois_fin'),
+            annee_fin = request.POST.get('Annee_fin'),
+            filiere = request.POST.get('filiere'),
+            niveau = request.POST.get('niveau'),
+            obtention = request.POST.get('obtention')
+            ).save()
+            return redirect(formationInfo, username=request.user.username)
+    else:
+        return HttpResponse("Il faut entrer le lieu du formation")
+    return redirect(formationInfo, username=request.user.username)
+
+
 @login_required
 def profilInfo(request, username):
-    user = get_object_or_404(User, username=username)
-    info_user = Profil.objects.get(username_id=user.id)
-    return render(request, 'connexion/info-profil.html', locals())
+    user_viewed = get_object_or_404(User, username=username)
+    info_user_viewed = Profil.objects.get(username_id=user_viewed.id)
+    info_user = Profil.objects.get(username_id=request.user.id)
+    apropos ='active'
+    try:
+        info_user_viewed.dateNaissance = info_user_viewed.dateNaissance.strftime('%d %m %Y')
+    except:
+        pass
+    return render(request, 'connexion/profil/info-profil.html', locals())
 
 
-def getImage(request):
-    print(request.POST.get('pdp-file'))
-    return redirect(profilInfo)
+@login_required
+def formationInfo(request, username):
+    user_viewed = get_object_or_404(User, username=username)
+    info_user_viewed = Profil.objects.get(username_id=user_viewed.id)
+    info_user = Profil.objects.get(username_id=request.user.id)
+    users_formation = Formation.objects.filter(username_id=user_viewed.id).order_by('-annee_debut').all()
+    formation ='active'
+    if user_viewed.id == request.user.id:
+        if len(users_formation) ==0:
+            return redirect(formationAdd)
+    return render(request, 'connexion/profil/formation-profil.html', locals())
+
+
+def formationDelete(request, id):
+    Formation.objects.filter(pk=id).delete()
+    return redirect(formationInfo, request.user.username)

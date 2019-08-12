@@ -25,6 +25,14 @@
 											  <input type="text" name="mail" value={{user.email}} required="required"/>
 											  <label class="control-label" for="input"><a href="https://wpkixx.com/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="4b0e262a22270b">Email</a></label><i class="mtrl-select"></i>
 											</div>
+											<div class="form-group half">	
+											  <input type="text" id="input" value="{{info_user.poste}}"name="poste"/>
+											  <label class="control-label" for="input">Poste Actuelle</label><i class="mtrl-select"></i>
+											</div>
+											<div class="form-group half">	
+											  <input type="text" value="{{info_user.lieu}}" name="lieu"/>
+											  <label class="control-label" for="input">Entreprise/Autre</label><i class="mtrl-select"></i>
+											</div>
 											<div class="form-group">
 											  <input type="text" name="phone" value={{phone}} />
 											  <label class="control-label" for="input">Numero de Téléphone</label><i class="mtrl-select"></i>
@@ -40,7 +48,7 @@
 												</div>
 												<div class="form-group">
 													<select name='mois'>
-													<option>{{info_user.mois}}</option>
+													<option value={{info_user.moisn}}>{{info_user.moisl}}</option>
 														  <option value=1>Jan</option>
 														  <option value=2>Feb</option>
 														  <option value=3>Mar</option>
@@ -102,7 +110,7 @@
 													<option>{{info_user.ville}}</option>
 													<option>Ville</option>
 											{% endif %}
-													<option>Antananrivo</option>
+													<option>Antananarivo</option>
 													<option>Ƭoamasina</option>
 													<option>Mahajanga</option>
 													<option>Toliara</option>

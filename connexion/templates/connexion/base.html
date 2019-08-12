@@ -14,6 +14,10 @@
     <link rel="stylesheet" href="{% static 'connexion/css/style.css' %}">
     <link rel="stylesheet" href="{% static 'connexion/css/color.css' %}">
     <link rel="stylesheet" href="{% static 'connexion/css/responsive.css' %}">
+	<link rel="stylesheet" href="{% static 'connexion/assets/css/bootstrap.min.css' %}">
+	<link rel="stylesheet" href="{% static 'connexion/assets/css/style.css' %}">
+	<link rel="stylesheet" href="{% static 'connexion/assets/fonts/font-awesome/css/font-awesome.min.css' %}">
+
 
 </head>
 	
@@ -388,21 +392,18 @@
 						<a href="messages.html" title="" class="more-mesg">view more</a>
 					</div>
 				</li>
-				<li><a href="#" title="Languages" data-ripple=""><i class="fa fa-globe"></i></a>
+				<li><a href="#" style="color:#088dcd;" title="Prenom de l'utilisateur" data-ripple=""><i class=''></i>{{request.user.last_name}}</a>
 					<div class="dropdowns languages">
-						<a href="#" title=""><i class="ti-check"></i>English</a>
-						<a href="#" title="">Arabic</a>
-						<a href="#" title="">Dutch</a>
-						<a href="#" title="">French</a>
+						<a href="#" title=""><i class="ti-check"></i> Malagasy</a>
 					</div>
 				</li>
 			</ul>
 			<div class="user-img">
-				<img src="{% static 'connexion/images/Picture/img.png' %}" alt="">
+				<img style="border-radius:50%;width:36px;height:36px" src="{% static info_user.profilpic  %}" alt="">
 				<span class="status f-online"></span>
 				<div class="user-setting">
 					<a href="#" title=""><span class="status f-online"></span>Actif</a>
-					<a href="window.location='{% url 'profil-info' request.user.username %}'" title=""><i class="ti-user"></i>Voir Profil</a>
+					<a Onclick="window.location='{% url 'profil-info' request.user.username %}'" title=""><i class="ti-user"></i>Voir Profil</a>
 					<a Onclick="window.location='{% url 'profil-edit-info' %}'" title=""><i class="ti-pencil-alt"></i>Modifier Profil</a>
 					<a href="#" title=""><i class="ti-target"></i>activity log</a>
 					<a href="#" title=""><i class="ti-settings"></i>Sécurité</a>
@@ -416,6 +417,27 @@
 
 		{% block content %}    {% endblock %}
 
+	<footer class="layout-dark">
+		<div class="copy-right">
+			<div class="container padding-tb-50px">
+				<div class="row">
+					<div class="col-lg-6">
+						<div class="copy-right-text text-lg-left text-center sm-mb-15px"><a target="_blank" href="#">@ti-asa </a> </div>
+					</div>
+					<div class="col-lg-6">
+						<!--  Social -->
+						<ul class="social-media list-inline text-lg-right text-center margin-0px text-white">
+							<li class="list-inline-item"><a class="facebook" href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+							<li class="list-inline-item"><a class="linkedin" href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
+							<li class="list-inline-item"><a class="google" href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
+							<li class="list-inline-item"><a class="twitter" href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+						</ul>
+						<!-- // Social -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</footer>
 </div>
    
 	<script data-cfasync="false" src="{% static 'connexion/js/email-decode.min.js' %}"></script>

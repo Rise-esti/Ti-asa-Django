@@ -4,16 +4,16 @@
 
 <section>
 		<div class="feature-photo">
-			<figure><img src="{% static 'connexion/images/resources/timeline-1.jpg'%}" alt=""></figure>
+			<figure><img style="max-height:400px !important;" src="{% static info_user_viewed.coverpic %}" alt=""></figure>
 			<div class="add-btn">
 				<span>0 Abonnés</span>
 				<a href="#" title="" data-ripple=""> Suivre </a>
 			</div>
-			<form class="edit-phto">
+			<form class="edit-phto" id="tata" action="{% url 'getimage' 'cover' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
 				<i class="fa fa-camera-retro"></i>
 				<label class="fileContainer">
-					Edit Cover Photo
-				<input type="file"/>
+					Modifier Photo de Couverture Professionnel
+				<input type="file" name="pdc-file" accept='image/*' onchange="tata.submit()"/>
 				</label>
 			</form>
 			<div class="container-fluid">
@@ -21,13 +21,15 @@
 					<div class="col-lg-2 col-sm-3">
 						<div class="user-avatar">
 							<figure>
-								<img src="{% static 'connexion/images/Picture/gaetan.png'%}" alt="">
-								<form class="edit-phto" id="toto" action="{% url 'getimage' %}" method="post" enctype='multipart/form-data'>{% csrf_token %}
+								<img src="{% static info_user_viewed.profilpic %}" alt="">
+								<form class="edit-phto" id="toto" action="{% url 'getimage' 'profil' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
+									{% if user_viewed.id == request.user.id %}
 									<i class="fa fa-camera-retro"></i>
 									<label class="fileContainer">
-										Edit Display Photo
-										<input Onchange="toto.submit()" type="file" name='pdp-file' />
+										Modifier Photo
+										<input Onchange="toto.submit()" type="file" accept="image/*" name="pdp-file"/>
 									</label>
+									{% endif %}
 								</form>
 							</figure>
 						</div>
@@ -36,17 +38,17 @@
 						<div class="timeline-info">
 							<ul>
 								<li class="admin-name">
-								  <h5>{{request.user.first_name}} {{request.user.last_name}}</h5>
-								  <span>Ti-asa Admin</span>
+								  <h5>{{user_viewed.first_name}} {{user_viewed.last_name}}</h5>
+								  <span>{{user_viewed.poste}}</span>
 								</li>
 								<li>
-									<a class="" href="time-line.html" title="" data-ripple="">Journal</a>
-									<a class="" href="timeline-photos.html" title="" data-ripple="">A propos</a>
-									<a class="" href="timeline-videos.html" title="" data-ripple="">Formation</a>
-									<a class="" href="timeline-friends.html" title="" data-ripple="">Experience</a>
-									<a class="" href="groups.html" title="" data-ripple="">Competence</a>
-									<a class="" href="about.html" title="" data-ripple="">Centre d'intêret</a>
-									<a class="active" href="#" title="" data-ripple="">Plus</a>
+									<a class="{{journal}}" href="time-line.html" title="" data-ripple="">Journal</a>
+									<a class="{{apropos}}" href="{% url 'profil-info' user_viewed.username %}" title="" data-ripple="">A propos</a>
+									<a class="{{formation}}" href="{% url 'formation-info' user_viewed.username %}" title="" data-ripple="">Formation</a>
+									<a class="{{experience}}" href="timeline-friends.html" title="" data-ripple="">Experience</a>
+									<a class="{{competence}}" href="groups.html" title="" data-ripple="">Competence</a>
+									<a class="{{interet}}" href="about.html" title="" data-ripple="">Centre d'intêret</a>
+									<a class="{{moded}}" href="{% url 'profil-edit-info' %}" title="" data-ripple="">Plus</a>
 								</li>
 							</ul>
 						</div>
@@ -64,7 +66,60 @@
 							<div class="col-lg-3">
 								<aside class="sidebar static">
 									<div class="widget">
-										<h4 class="widget-title">Recent Activity</h4>
+										<h4 class="widget-title">Modification Profil</h4>
+										<ul class="naves">
+											<li>
+												<i class="ti-info-alt"></i>
+												<a href="{% url 'profil-edit-info' %}" title="">Information Generale</a>
+											</li>
+											<li>
+												<i class="fa fa-graduation-cap"></i>
+												<a href="{% url 'formation-info' request.user.username %}" title="">Formation</a>
+											</li>
+											<li>
+												<i class="fa fa-sliders"></i>
+												<a href="edit-interest.html" title="">Competence</a>
+											</li>
+											<li>
+												<i class="fa fa-briefcase"></i>
+												<a href="edit-account-setting.html" title="">Experience</a>
+											</li>
+											<li>
+												<i class="ti-heart"></i>
+												<a href="edit-password.html" title="">Centre d'intêret</a>
+											</li>
+											<li>
+												<i class="ti-lock"></i>
+												<a href="edit-password.html" title="">Mot de passe</a>
+											</li>
+										</ul>
+									</div><!-- settings widget -->	
+									<div class="widget  stick-widget">
+										<h4 class="widget-title">Publicité Ici</h4>
+										<ul class="activitiez">
+											<li>
+												<div class="activity-meta">
+													<i>Offre</i>
+													<span><a href="#" title="">Publicité de 10 Jours</a></span>
+													<h6>Pour <a href="time-line.html">Ar 10 000.</a></h6>
+												</div>
+											</li>
+											<li>
+												<div class="activity-meta">
+													<i>Ofrre</i>
+													<span><a href="#" title="">Publicité de 30 Jours</a></span>
+													<h6>Pour <a href="time-line.html">Ar 25 000.</a></h6>
+												</div>
+											</li>
+											<li>
+												<div class="activity-meta">
+													<i>Super Offre</i>
+													<span><a href="#" title="">Publicité Illimité.</a></span>
+													<h6>"<a href="#"> Sponsoring.</a>"</h6>
+												</div>
+											</li>
+										</ul>
+										{% comment %}  
 										<ul class="activitiez">
 											<li>
 												<div class="activity-meta">
@@ -87,39 +142,16 @@
 												</div>
 											</li>
 										</ul>
-									</div>
-									<div class="widget stick-widget">
-										<h4 class="widget-title">Edit info</h4>
-										<ul class="naves">
-											<li>
-												<i class="ti-info-alt"></i>
-												<a href="edit-profile-basic.html" title="">Basic info</a>
-											</li>
-											<li>
-												<i class="ti-mouse-alt"></i>
-												<a href="edit-work-eductation.html" title="">Education & Work</a>
-											</li>
-											<li>
-												<i class="ti-heart"></i>
-												<a href="edit-interest.html" title="">My interests</a>
-											</li>
-											<li>
-												<i class="ti-settings"></i>
-												<a href="edit-account-setting.html" title="">account setting</a>
-											</li>
-											<li>
-												<i class="ti-lock"></i>
-												<a href="edit-password.html" title="">change password</a>
-											</li>
-										</ul>
-									</div><!-- settings widget -->										
+										{% endcomment %}
+									</div>									
 								</aside>
 							</div><!-- sidebar -->
 							 {% block profil %}                 {% endblock %} 
 							<div class="col-lg-3">
 								<aside class="sidebar static">
 									<div class="widget">
-											<h4 class="widget-title">Your page</h4>	
+											<h4 class="widget-title">{{user_viewed.last_name}} pages</h4>
+												{% comment %}  
 											<div class="your-page">
 												<figure>
 													<a title="" href="#"><img alt="" src="{% static 'connexion/images/resources/friend-avatar9.jpg'%}"></a>
@@ -193,43 +225,39 @@
 													</div>
 												</div>
 											</div>
+											{% endcomment %}
 										</div>
 									<div class="widget stick-widget">
-										<h4 class="widget-title">Who's follownig</h4>
-										<ul class="followers">
+										<h4 class="widget-title">Profil Similaire</h4>
+										<ul id="people-list" class="friendz-list">
 											<li>
-												<figure><img src="{% static 'connexion/images/resources/friend-avatar2.jpg'%}" alt=""></figure>
-												<div class="friend-meta">
-													<h4><a href="time-line.html" title="">Kelly Bill</a></h4>
-													<a href="#" title="" class="underline">Add Friend</a>
+												<figure>
+													<img src="{% static 'connexion/images/Picture/profil/3.png' %}" alt="">
+													<span class="status f-online"></span>
+												</figure>
+												<div class="friendz-meta">
+													<a Onclick="window.location='{% url 'profil-info' 'gaetan1903' %}'">Gaetan Jonathan</a>
+													<i><a href="#" class="__cf_email__" >gaetan.s118@gmail.com</a></i>
 												</div>
 											</li>
-											<li>
-												<figure><img src="{% static 'connexion/images/resources/friend-avatar4.jpg'%}" alt=""></figure>
-												<div class="friend-meta">
-													<h4><a href="time-line.html" title="">Issabel</a></h4>
-													<a href="#" title="" class="underline">Add Friend</a>
+												<li>
+												<figure>
+													<img src="{% static 'connexion/images/Picture/profil/4.png' %}" alt="">
+													<span class="status f-online"></span>
+												</figure>
+												<div class="friendz-meta">
+													<a Onclick="window.location='{% url 'profil-info' 'manambintsoa4' %}'">Mihaingoherilanto Manambintsoa</a>
+													<i><a href="#" class="__cf_email__" >ntsoa.s118@gmail.com</a></i>
 												</div>
 											</li>
-											<li>
-												<figure><img src="{% static 'connexion/images/resources/friend-avatar6.jpg'%}" alt=""></figure>
-												<div class="friend-meta">
-													<h4><a href="time-line.html" title="">Andrew</a></h4>
-													<a href="#" title="" class="underline">Add Friend</a>
-												</div>
-											</li>
-											<li>
-												<figure><img src="{% static 'connexion/images/resources/friend-avatar8.jpg'%}" alt=""></figure>
-												<div class="friend-meta">
-													<h4><a href="time-line.html" title="">Sophia</a></h4>
-													<a href="#" title="" class="underline">Add Friend</a>
-												</div>
-											</li>
-											<li>
-												<figure><img src="{% static 'connexion/images/resources/friend-avatar3.jpg'%}" alt=""></figure>
-												<div class="friend-meta">
-													<h4><a href="time-line.html" title="">Allen</a></h4>
-													<a href="#" title="" class="underline">Add Friend</a>
+												<li>
+												<figure>
+													<img src="{% static 'connexion/images/Picture/profil/5.png' %}" alt="">
+													<span class="status f-online"></span>
+												</figure>
+												<div class="friendz-meta">
+													<a Onclick="window.location='{% url 'profil-info' 'landry5' %}'">Manankoraisina Landry</a>
+													<i><a href="#" class="__cf_email__" >landry.apsa@gmail.com</a></i>
 												</div>
 											</li>
 										</ul>

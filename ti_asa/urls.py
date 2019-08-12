@@ -22,6 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='home'),
     path('log/', include('connexion.urls')),
+    path("<username>", views.profilInfo)
 ]
 
 if settings.DEBUG:

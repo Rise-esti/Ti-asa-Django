@@ -1,0 +1,99 @@
+{% extends 'connexion/base_profil.html' %}
+{% load static %}
+
+
+	{% block profil %}
+
+	<div class="col-lg-6">
+								<div class="central-meta">
+									<div class="editing-info">
+										<h5 class="f-title"><i class="ti-info-alt"></i> Ajouter une Formation</h5> 
+										
+										<form method="post" class="formcomp" action="{% url 'formation-info-add-action' %}">{% csrf_token %}
+											<div class="form-group">	
+											  <input type="text" name="lieu" required="required" />
+											  <label class="control-label" for="input">Ecole/institut/autres</label><i class="mtrl-select"></i>
+											</div>
+											<div class="form-group">
+											  <label style="color:#088dcd;"class="control-label">Depuis</label>
+											</div>
+											<div class="form-group half">	
+												<select name='Mois_deb'>
+													<option value="">Mois</option>
+														  <option>Janvier</option>
+														  <option>Fevrier</option>
+														  <option>Mars</option>
+														  <option>Avril</option>
+														  <option>Mai</option>
+														  <option>Juin</option>
+														  <option>Juillet</option>
+														  <option>Août</option>
+														  <option>Septembre</option>
+														  <option>Octobre</option>
+														  <option>Novembre</option>
+														  <option>Decembre</option>
+													</select>
+											</div>
+											<div class="form-group half">	
+											 	<select name='Annee_deb'>
+													<option>Annee</option>
+													 {% for year in years%}
+														  <option>{{year}}</option>
+													{% endfor %}
+												</select>
+											</div>																								
+										
+											<div class="form-group">
+											  <label style="color:#088dcd;"class="control-label">Jusqu'en</label>
+											</div>
+											<div class="form-group half">	
+												<select name='Mois_fin'>
+													<option value="">Mois</option>
+														 <option>Janvier</option>
+														  <option>Fevrier</option>
+														  <option>Mars</option>
+														  <option>Avril</option>
+														  <option>Mai</option>
+														  <option>Juin</option>
+														  <option>Juillet</option>
+														  <option>Août</option>
+														  <option>Septembre</option>
+														  <option>Octobre</option>
+														  <option>Novembre</option>
+														  <option>Decembre</option>
+													</select>
+											</div>
+											<div class="form-group half">	
+											 	<select name='Annee_fin'>
+													<option value="">Annee</option>
+														   {% for year in years%}
+														  <option>{{year}}</option>
+															{% endfor %}
+
+												</select>
+											</div>																
+											<div class="form-group">	
+											  <input type="text" name="filiere" />
+											  <label class="control-label" for="input">Filière</label><i class="mtrl-select"></i>
+											</div>
+											<div class="form-group">	
+												<input type="text" name="niveau" />
+												<label class="control-label" for="input">Niveau</label><i class="mtrl-select"></i>
+											</div>
+											<div class="form-group">	
+												<input type="text" name="obtention"/>
+												<label class="control-label" for="input">Certificats/diplômes</label><i class="mtrl-select"></i>
+											</div>
+											
+											<div class="submit-btns">
+												<button type="submit" class="mtr-btn bouh"><span>Mettre à jour</span></button>
+											</div>
+										</form>
+											
+										
+									</div>
+								</div>	
+							</div><!-- centerl meta -->
+
+
+    {% endblock %}

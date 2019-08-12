@@ -645,6 +645,9 @@
         z-index: 9;
         right: 30px;
     }
+    .import{
+        left: 10% !important;
+    }
     .add-btn > a {
         font-size: 11px;
         padding: 3px 13px;
@@ -1510,6 +1513,9 @@
     .sociaz-media > li {
         margin: 0 0 4px;
     }
+    .import{
+        left: 10% !important;
+    }
 }
 
 @media screen and (max-width: 360px) {
@@ -1534,6 +1540,10 @@
         max-width: 45%;
         overflow: hidden;
         text-overflow: ellipsis;
+    }
+
+    .import{
+        left: 5% !important;
     }
     .we-reply {
         vertical-align: super;

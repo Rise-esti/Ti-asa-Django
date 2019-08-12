@@ -1,0 +1,113 @@
+{% extends 'connexion/base_profil.html' %}
+{% load static %}
+
+
+	{% block profil %}
+
+	<div class="col-lg-6">
+								<div class="central-meta">
+									<div class="editing-info">
+										<h5 class="f-title"><i class="ti-info-alt"></i> Editer les formations</h5> 
+
+									<form method="post" class="formcomp" action="{% url 'formation-info-edit-action' %}">{% csrf_token %}
+											<div class="form-group">	
+											  <input type="text" name="lieu" value="{{user_formation.lieu}}" required="required" />
+											  <label class="control-label" for="input">Ecole/institut/autres</label><i class="mtrl-select"></i>
+											</div>
+											<div class="form-group">
+											  <label style="color:#088dcd;"class="control-label">Depuis</label>
+											</div>
+											<div class="form-group half">	
+												<select name='Mois_deb'>
+												{% if user_formation.mois_debut != '' %}
+													<option>{{user_formation.mois_debut}}</option>
+														<option value="">Mois</option>
+												{% else %}
+													<option value="">Mois</option>
+												{% endif %}
+														  <option>Janvier</option>
+														  <option>Fevrier</option>
+														  <option>Mars</option>
+														  <option>Avril</option>
+														  <option>Mai</option>
+														  <option>Juin</option>
+														  <option>Juillet</option>
+														  <option>Août</option>
+														  <option>Septembre</option>
+														  <option>Octobre</option>
+														  <option>Novembre</option>
+														  <option>Decembre</option>
+													</select>
+											</div>
+											<div class="form-group half">	
+											 	<select name='Annee_deb'>
+													<option>{{user_formation.annee_debut}}</option>
+													 {% for year in years%}
+														  <option>{{year}}</option>
+													{% endfor %}
+												</select>
+											</div>																								
+										
+											<div class="form-group">
+											  <label style="color:#088dcd;"class="control-label">Jusqu'en</label>
+											</div>
+											<div class="form-group half">	
+												<select name='Mois_fin'>
+												{% if user_formation.mois_fin != ''%}
+													<option>{{user_formation.mois_fin}}</option>
+														<option value="">Mois</option>
+												{% else %}
+													<option value="">Mois</option>
+												{% endif %}
+														 <option>Janvier</option>
+														  <option>Fevrier</option>
+														  <option>Mars</option>
+														  <option>Avril</option>
+														  <option>Mai</option>
+														  <option>Juin</option>
+														  <option>Juillet</option>
+														  <option>Août</option>
+														  <option>Septembre</option>
+														  <option>Octobre</option>
+														  <option>Novembre</option>
+														  <option>Decembre</option>
+													</select>
+											</div>
+											<div class="form-group half">	
+											 	<select name='Annee_fin'>
+												 {% if user_formation.annee_fin != '' %}
+													<option>{{user_formation.annee_fin}}</option>
+														<option value="">Annee</option>
+												{% else %}
+													<option value="">Annee</option>
+												{% endif %}
+														   {% for year in years%}
+														  <option>{{year}}</option>
+															{% endfor %}
+
+												</select>
+											</div>																
+											<div class="form-group">	
+											  <input type="text" name="filiere" value="{{user_formation.filiere}}"/>
+											  <label class="control-label" for="input">Filière</label><i class="mtrl-select"></i>
+											</div>
+											<div class="form-group">	
+												<input type="text" name="niveau" value="{{user_formation.niveau}}"/>
+												<label class="control-label" for="input">Niveau</label><i class="mtrl-select"></i>
+											</div>
+											<div class="form-group">	
+												<input type="text" name="obtention" value="{{user_formation.obtention}}"/>
+												<label class="control-label" for="input">Certificats/diplômes</label><i class="mtrl-select"></i>
+											</div>
+											
+											<div class="submit-btns">
+												<button type="submit" name="id" value={{user_formation.id}} class="mtr-btn bouh"><span>Mettre à jour</span></button>
+											</div>
+										</form>
+											
+									</div>
+								</div>	
+							</div><!-- centerl meta -->
+
+
+    {% endblock %}
