@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from .models import Profil, Formation, Competence
+from .models import Profil, Formation, Competence, Experience
 import random, datetime, time, os
 
 # Create your views here.
@@ -252,7 +252,6 @@ def infoCompetenceEdit(request):
         return HttpResponse('not okey')
 
 
-
 @login_required
 def profilInfo(request, username):
     user_viewed = get_object_or_404(User, username=username)
@@ -306,9 +305,11 @@ def competenceAdd(request):
 
     return render(request, 'connexion/profil/competence-profil-add.html', locals())
 
+
 def competenceDelete(request, id):
     Competence.objects.filter(pk=id).delete()
     return redirect(competenceInfo, request.user.username)
+
 
 def competenceEdit(request, id):
     user_viewed = get_object_or_404(User, username=request.user.username)
@@ -317,3 +318,83 @@ def competenceEdit(request, id):
     moded = 'active'
     user_competence = Competence.objects.get(pk=id)
     return render(request, 'connexion/profil/competence-profil-edit.html', locals())
+
+
+def experienceInfo(request, username):
+    user_viewed = get_object_or_404(User, username=username)
+    info_user_viewed = Profil.objects.get(username_id=user_viewed.id)
+    info_user = Profil.objects.get(username_id=request.user.id)
+    users_experience= Experience.objects.filter(username_id=user_viewed.id).order_by('-annee_debut').all()
+    experience ='active'
+    '''
+    if user_viewed.id == request.user.id:
+        if len(users_formation) ==0:
+            return redirect(formationAdd)
+    '''
+    return render(request, 'connexion/profil/experience-profil.html', locals())
+
+
+
+def experienceAdd(request):
+    user_viewed = get_object_or_404(User, username=request.user.username)
+    info_user_viewed = Profil.objects.get(username_id=user_viewed.id)
+    info_user = Profil.objects.get(username_id=request.user.id)
+    moded = 'active'
+    years = [x for x in range(int(datetime.datetime.today().strftime('%Y')) + 1, 1980, -1)]
+    return render(request, 'connexion/profil/experience-profil-add.html', locals())
+
+
+def experienceEdit(request, id):
+    user_viewed = get_object_or_404(User, username=request.user.username)
+    info_user_viewed = Profil.objects.get(username_id=user_viewed.id)
+    info_user = Profil.objects.get(username_id=request.user.id)
+    moded ='active'
+    years = [x for x in range(int(datetime.datetime.today().strftime('%Y')) + 1, 1980, -1)]
+
+    user_experience= Experience.objects.get(pk=id)
+
+    return render(request, 'connexion/profil/experience-profil-edit.html', locals())
+
+
+def experienceDelete(request, id):
+    Experience.objects.filter(pk=id).delete()
+    return redirect(experienceInfo, request.user.username)
+
+def infoExperienceAdd(request):
+    if request.POST.get('lieu') != '':
+        try:
+            int(request.POST.get('Annee_deb'))
+        except:
+            return HttpResponse("Il faut entrer l'annee de debut")
+        else:
+            Experience(username_id=request.user.id,
+            lieu = request.POST.get('lieu'),
+            mois_debut = request.POST.get('Mois_deb'),
+            annee_debut = request.POST.get('Annee_deb'),
+            mois_fin = request.POST.get('Mois_fin'),
+            annee_fin = request.POST.get('Annee_fin'),
+            poste = request.POST.get('poste'),
+            ).save()
+            return redirect(experienceInfo, username=request.user.username)
+    else:
+        return HttpResponse("Il faut entrer le lieu du formation")
+    return redirect(experienceInfo, username=request.user.username)
+
+
+def infoExperienceEdit(request):
+    if request.POST.get('lieu') != '':
+        try:
+            int(request.POST.get('Annee_deb'))
+        except:
+            return HttpResponse("Il faut entrer l'annee de debut")
+        else:
+            Experience.objects.filter(pk=request.POST.get('id')).update(lieu = request.POST.get('lieu'),
+            mois_debut = request.POST.get('Mois_deb'),
+            annee_debut = request.POST.get('Annee_deb'),
+            mois_fin = request.POST.get('Mois_fin'),
+            annee_fin = request.POST.get('Annee_fin'),
+            poste = request.POST.get('poste'),
+            )
+            return redirect(experienceInfo, username=request.user.username)
+    else:
+        return HttpResponse("Il faut entrer le lieu du formation")

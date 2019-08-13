@@ -7,6 +7,9 @@
                         <div class="central-meta">
                             <div class="editing-info">
                                 <h5 class="f-title"><i class="ti-info-alt"></i> Compétences</h5>
+                                 {% if request.user.id == user_viewed.id %}
+                                    <i OnClick="window.location='{% url 'competence-info-add' %}'"  style="color: #088dcd !important; font-size: 50px !important; display: inline !important;margin-left:60%!important;cursor:pointer !important;" class="fa fa-plus addeo"> </i>	
+                                {% endif %}
                                 {% for user_competence in users_competence%}
                                 <form method="post" class="formcomp">
                                     <div class="form-group">	

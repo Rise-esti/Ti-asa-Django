@@ -4,22 +4,23 @@
 
 	{% block profil %}
 
-	<div class="col-lg-6">
+		<div class="col-lg-6">
 			<div class="central-meta">
 				<div class="editing-info">
-					<h5 class="f-title"><i class="ti-info-alt"></i> Ajouter une Formation</h5> 
+					<h5 class="f-title"><i class="ti-info-alt"></i> Editer cette Experience</h5> 
 					
-					<form method="post" class="formcomp" action="{% url 'formation-info-add-action' %}">{% csrf_token %}
-						<div class="form-group">	
-							<input type="text" name="lieu" required="required" />
-							<label class="control-label" for="input">Ecole/institut/autres</label><i class="mtrl-select"></i>
-						</div>
+					<form method="post" class="formcomp" action="{% url 'experience-info-edit-action' %}">{% csrf_token %}
+						
 						<div class="form-group">
 							<label style="color:#088dcd;"class="control-label">Depuis</label>
 						</div>
 						<div class="form-group half">	
 							<select name='Mois_deb'>
-								<option value="">Mois</option>
+                                {% if user_experience.mois_debut == ''%}
+								    <option value="">Mois</option>
+                                {% else %}
+                                    <option>{{user_experience.mois_debut}}</option>
+                                {% endif %}
 										<option>Janvier</option>
 										<option>Fevrier</option>
 										<option>Mars</option>
@@ -36,19 +37,23 @@
 						</div>
 						<div class="form-group half">	
 							<select name='Annee_deb'>
-								<option>Annee</option>
-									{% for year in years%}
+								<option>{{user_experience.annee_debut}}</option>
+								{% for year in years%}
 										<option>{{year}}</option>
 								{% endfor %}
 							</select>
 						</div>																								
-					
+    
 						<div class="form-group">
 							<label style="color:#088dcd;"class="control-label">Jusqu'en</label>
 						</div>
 						<div class="form-group half">	
 							<select name='Mois_fin'>
+                            {% if user_experience.mois_fin == ''%}
 								<option value="">Mois</option>
+                            {% else %}
+                                <option>{{user_experience.mois_fin}}</option>
+                            {% endif %}
 										<option>Janvier</option>
 										<option>Fevrier</option>
 										<option>Mars</option>
@@ -65,28 +70,29 @@
 						</div>
 						<div class="form-group half">	
 							<select name='Annee_fin'>
+                            {% if user_experience.annee_fin == ''%}
 								<option value="">Annee</option>
+                            {% else %}
+                                <option>{{user_experience.annee_fin}}</option>
+                            {% endif %}
 										{% for year in years%}
 										<option>{{year}}</option>
 										{% endfor %}
 
 							</select>
-						</div>																
-						<div class="form-group">	
-							<input type="text" name="filiere" />
-							<label class="control-label" for="input">Filière</label><i class="mtrl-select"></i>
 						</div>
+                        <br>															
 						<div class="form-group">	
-							<input type="text" name="niveau" />
-							<label class="control-label" for="input">Niveau</label><i class="mtrl-select"></i>
+							<input type="text" value="{{user_experience.poste}}" name="poste" required="required"/>
+							<label class="control-label" for="input">Poste</label><i class="mtrl-select"></i>
 						</div>
-						<div class="form-group">	
-							<input type="text" name="obtention"/>
-							<label class="control-label" for="input">Certificats/diplômes</label><i class="mtrl-select"></i>
+                        <div class="form-group">	
+							<input type="text" name="lieu" value="{{user_experience.lieu}}" required="required" />
+							<label class="control-label" for="input">Entreprise/autre</label><i class="mtrl-select"></i>
 						</div>
-						
+	
 						<div class="submit-btns">
-							<button type="submit" class="mtr-btn bouh"><span>Mettre à jour</span></button>
+							<button type="submit" value={{user_experience.id}} name="id" class="mtr-btn bouh"><span>Mettre à Jour</span></button>
 						</div>
 					</form>
 						

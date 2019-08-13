@@ -1,0 +1,47 @@
+{% extends 'connexion/base_profil.html' %}
+{% load static %}
+
+
+	{% block profil %}
+
+
+    
+        	<div class="col-lg-6">
+            <div class="central-meta">
+                <div class="editing-info">
+                    <h5 class="f-title"><i class="ti-info-alt"></i> Expériences</h5>
+                    {% if request.user.id == user_viewed.id %}
+                        <i OnClick="window.location='{% url 'experience-info-add' %}'"  style="color: #088dcd !important; font-size: 50px !important; display: inline !important;margin-left:60%!important;cursor:pointer !important;" class="fa fa-plus addeo"> </i>	
+                    {% endif %}
+                    {% for user_experience in users_experience%}
+                    <form method="post">
+                        <div class="form-group">	
+                            <h6 class="forv" style="display: inline;color:#088dcd">Année :</h6> 
+                            <h6 style="display: inline"> {{user_experience.mois_debut}} {{user_experience.annee_debut}} - {{user_experience.mois_fin}} {{user_experience.annee_fin}} </h6>
+                            <i class="mtrl-select"></i>
+                        </div>
+                        <div class="form-group">	
+                            <h6 class="forv" style="display: inline; color:#088dcd">Entreprise/Lieu de travail :</h6> 
+                            <h6 style="display: inline">{{user_experience.lieu}}</h6>
+                            <i class="mtrl-select"></i>
+                        </div>
+                        <div class="form-group">	
+                            <h6 class="forv" style="display: inline; color:#088dcd">Poste :</h6> 
+                            <h6 style="display: inline;">{{user_experience.poste}}</h6>
+                            <i class="mtrl-select"></i>
+                        </div>
+                       <div class="submit-btns bouton" style="margin-left:50% !important;">
+							<button type="button" style="color:#ff4b5a" Onclick="x=confirm('Etes vous sur de vouloir supprimer?');if(x){window.location='{% url 'experience-info-delete' user_experience.id %}'};" class="mtr-btn"><span>Supprimer</span></button>
+							<button type="button" class="mtr-btn" Onclick="window.location='{% url 'experience-info-edit' user_experience.id %}'"><span>Modifier</span></button>
+						</div>
+                    </form>
+                    <br>
+                    {% endfor %}
+                    
+                </div>
+            </div>	
+        </div><!-- centerl meta -->
+
+
+
+    {% endblock %}

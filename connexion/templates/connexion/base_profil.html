@@ -39,14 +39,14 @@
 							<ul>
 								<li class="admin-name">
 								  <h5>{{user_viewed.first_name}} {{user_viewed.last_name}}</h5>
-								  <span>{{user_viewed.poste}}</span>
+								  <span>{{info_user_viewed.poste}}</span>
 								</li>
 								<li>
 									<a class="{{journal}}" href="time-line.html" title="" data-ripple="">Journal</a>
 									<a class="{{apropos}}" href="{% url 'profil-info' user_viewed.username %}" title="" data-ripple="">A propos</a>
 									<a class="{{formation}}" href="{% url 'formation-info' user_viewed.username %}" title="" data-ripple="">Formation</a>
 									<a class="{{competence}}" href="{% url 'competence-info' user_viewed.username %}" title="" data-ripple="">Competence</a>
-									<a class="{{experience}}" href="timeline-friends.html" title="" data-ripple="">Experience</a>
+									<a class="{{experience}}" href="{% url 'experience-info' user_viewed.username %}" title="" data-ripple="">Experience</a>
 									<a class="{{interet}}" href="about.html" title="" data-ripple="">Centre d'intêret</a>
 									<a class="{{moded}}" href="{% url 'profil-edit-info' %}" title="" data-ripple="">Plus</a>
 								</li>
@@ -83,7 +83,7 @@
 											</li>
 											<li>
 												<i class="fa fa-briefcase"></i>
-												<a href="edit-account-setting.html" title="">Experience</a>
+												<a href="{% url 'experience-info-add' %}" title="">Experience</a>
 											</li>
 											<li>
 												<i class="ti-heart"></i>

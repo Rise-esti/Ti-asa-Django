@@ -8,7 +8,7 @@ class Profil(models.Model):
     biographie = models.TextField(null=True)
     dateNaissance = models.DateTimeField(null=True)
     sexe = models.CharField(max_length=2, null=True)
-    username = models.ForeignKey(User, on_delete=models.CASCADE)
+    username = models.OneToOneField(User, on_delete=models.CASCADE)
     adresse = models.CharField(max_length=30, null=True)
     ville = models.CharField(max_length=30, null=True)
     poste = models.CharField(max_length=100, default='')
@@ -54,8 +54,7 @@ class Experience(models.Model):
     annee_debut = models.IntegerField()
     mois_fin = models.CharField(null=True, max_length=20)
     annee_fin = models.CharField(null=True, max_length=20)
-    filiere = models.CharField(max_length=50, null=True)
-    niveau = models.CharField(max_length=30, null=True)
+    poste = models.CharField(max_length=50, null=True)
     lieu = models.CharField(max_length=50)
 
     def __str__(self):
