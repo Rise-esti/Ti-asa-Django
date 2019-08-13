@@ -36,3 +36,28 @@ class Formation(models.Model):
         username = User.objects.filter(id=self.username_id)[0].username
         return username
         
+
+class Competence(models.Model):
+    username = models.ForeignKey(User, on_delete=models.CASCADE)
+    competence = models.CharField(max_length=128)
+    description = models.TextField(null=True)
+    niveau = models.CharField(max_length=30, null=True)
+
+    def __str__(self):
+        username = User.objects.get(id=self.username_id).username
+        return username
+    
+
+class Experience(models.Model):
+    username = models.ForeignKey(User, on_delete=models.CASCADE)
+    mois_debut = models.CharField(null=True, max_length=20)
+    annee_debut = models.IntegerField()
+    mois_fin = models.CharField(null=True, max_length=20)
+    annee_fin = models.CharField(null=True, max_length=20)
+    filiere = models.CharField(max_length=50, null=True)
+    niveau = models.CharField(max_length=30, null=True)
+    lieu = models.CharField(max_length=50)
+
+    def __str__(self):
+        username = User.objects.get(id=self.username_id).username
+        return username

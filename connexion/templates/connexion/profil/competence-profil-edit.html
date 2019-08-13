@@ -1,0 +1,34 @@
+{% extends 'connexion/base_profil.html' %}
+{% load static %}
+
+
+	{% block profil %}
+		<div class="col-lg-6">
+				<div class="central-meta">
+					<div class="editing-info">
+						<h5 class="f-title"><i class="ti-info-alt"></i>Modifier cette Compétence</h5> <i  class="fa fa-plus addeo"> </i>
+				<form method="post" class="formcomp" action="{% url 'competence-info-edit-action'  %}">{% csrf_token %}
+																
+							<div class="form-group">	
+								<input type="text" name="competence" value="{{user_competence.competence}}" required="required"/>
+								<label class="control-label" for="input">Compétence</label><i class="mtrl-select"></i>
+							</div>
+							<div class="form-group">	
+								<textarea rows="4" name="description" >{{user_competence.description}}</textarea>
+								<label class="control-label" for="textarea"> Description</label><i class="mtrl-select"></i>
+							</div>
+							<div class="form-group">	
+								<input type="text" value="{{user_competence.niveau}}" name="niveau" />
+								<label class="control-label" for="input">Niveau</label><i class="mtrl-select"></i>
+							</div>
+							<div class="submit-btns">
+								<button type="submit" name="id" value="{{user_competence.id}}" class="mtr-btn bouh"><span>Ajouter</span></button>
+							</div>
+							
+						</form>
+					</div>
+				</div>	
+			</div><!-- centerl meta -->
+
+
+	{% endblock %}

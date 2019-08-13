@@ -1,0 +1,39 @@
+{% extends 'connexion/base_profil.html' %}
+{% load static %}
+
+
+	{% block profil %}
+        		<div class="col-lg-6">
+                        <div class="central-meta">
+                            <div class="editing-info">
+                                <h5 class="f-title"><i class="ti-info-alt"></i> Compétences</h5>
+                                {% for user_competence in users_competence%}
+                                <form method="post" class="formcomp">
+                                    <div class="form-group">	
+                                        <i class="fa fa-sliders forc" style="display: inline"> <h6 class="comp" style="display: inline">{{user_competence.competence}}</h6> </i>
+                                        <div class="form-radio">
+                                            <div class="radio" >
+                                                    <label >
+                                                        <input type="radio" checked="checked" name="radio"><i class="check-box"></i>Recommander
+                                                    </label> 
+                                            </div>
+                                        </div>
+                                        <i class="mtrl-select"></i>
+                                        <p class="para" style="display: block">{{user_competence.description}} </p>
+                                        <div class="form-group">	
+												<h6 class="forv" style="display: inline;color:#088dcd">Niveau :</h6> 
+												<h6 style="display: inline">{{user_competence.niveau}}</h6>
+												<i class="mtrl-select"></i>
+										</div>
+                                        <div class="submit-btns bouton" style="margin-left:50% !important; display:inline">
+                                            <button type="button" style="color:#ff4b5a" Onclick="x=confirm('Etes vous sur de vouloir supprimer?');if(x){window.location='{% url 'competence-info-delete' user_competence.id %}'};" class="mtr-btn"><span>Supprimer</span></button>
+                                            <button  Onclick="window.location='{% url 'competence-info-edit' user_competence.id %}'"   type="button" class="mtr-btn" ><span>Modifier</span></button>
+                                        </div>
+                                    </div>
+                                </form>
+                                {% endfor %}
+                            </div>
+                        </div>	
+				</div><!-- centerl meta -->
+
+    {% endblock %}

@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from .models import Profil, Formation
+from .models import Profil, Formation, Competence
 import random, datetime, time, os
 
 # Create your views here.
@@ -25,7 +25,6 @@ def upload_file(req, ino):
             for chunk in req.FILES.get('pdc-file').chunks():
                 destination.write(chunk)
         Profil.objects.filter(username_id=req.user.id).update(coverpic='connexion/images/Picture/cover/'+str(req.user.id)+'_'+str(time.time())+'.png')
-
 
     
 def connect(request):
@@ -229,6 +228,31 @@ def infoFormationAdd(request):
     return redirect(formationInfo, username=request.user.username)
 
 
+def infoCompetenceAdd(request):
+    if request.POST.get('competence') != '':
+        Competence(username_id=request.user.id,
+        competence=request.POST.get('competence'),
+        description=request.POST.get('description'),
+        niveau=request.POST.get('niveau')
+        ).save()
+        return redirect(competenceInfo, username=request.user.username)
+    else:
+        return HttpResponse('not okey')
+
+
+def infoCompetenceEdit(request):
+    if request.POST.get('competence') != '':
+        Competence.objects.filter(pk=request.POST.get('id')).update(username_id=request.user.id,
+        competence=request.POST.get('competence'),
+        description=request.POST.get('description'),
+        niveau=request.POST.get('niveau')
+        )
+        return redirect(competenceInfo, username=request.user.username)
+    else:
+        return HttpResponse('not okey')
+
+
+
 @login_required
 def profilInfo(request, username):
     user_viewed = get_object_or_404(User, username=username)
@@ -255,6 +279,41 @@ def formationInfo(request, username):
     return render(request, 'connexion/profil/formation-profil.html', locals())
 
 
+def competenceInfo(request, username):
+    user_viewed = get_object_or_404(User, username=username)
+    info_user_viewed = Profil.objects.get(username_id=user_viewed.id)
+    info_user = Profil.objects.get(username_id=request.user.id)
+    users_competence = Competence.objects.filter(username_id=user_viewed.id).all()
+    competence = 'active'
+    return render(request, 'connexion/profil/competence-profil.html', locals())
+
+
 def formationDelete(request, id):
     Formation.objects.filter(pk=id).delete()
     return redirect(formationInfo, request.user.username)
+
+
+def competenceAdd(request):
+    user_viewed = get_object_or_404(User, username=request.user.username)
+    info_user_viewed = Profil.objects.get(username_id=user_viewed.id)
+    info_user = Profil.objects.get(username_id=request.user.id)
+    try:
+        formation_user_viewed = Profil.objects.filter(username_id=user_viewed.id)
+    except:
+        pass
+
+    moded = 'active'
+
+    return render(request, 'connexion/profil/competence-profil-add.html', locals())
+
+def competenceDelete(request, id):
+    Competence.objects.filter(pk=id).delete()
+    return redirect(competenceInfo, request.user.username)
+
+def competenceEdit(request, id):
+    user_viewed = get_object_or_404(User, username=request.user.username)
+    info_user_viewed = Profil.objects.get(username_id=user_viewed.id)
+    info_user = Profil.objects.get(username_id=request.user.id)
+    moded = 'active'
+    user_competence = Competence.objects.get(pk=id)
+    return render(request, 'connexion/profil/competence-profil-edit.html', locals())

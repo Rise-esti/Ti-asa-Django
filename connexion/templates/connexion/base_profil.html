@@ -45,8 +45,8 @@
 									<a class="{{journal}}" href="time-line.html" title="" data-ripple="">Journal</a>
 									<a class="{{apropos}}" href="{% url 'profil-info' user_viewed.username %}" title="" data-ripple="">A propos</a>
 									<a class="{{formation}}" href="{% url 'formation-info' user_viewed.username %}" title="" data-ripple="">Formation</a>
+									<a class="{{competence}}" href="{% url 'competence-info' user_viewed.username %}" title="" data-ripple="">Competence</a>
 									<a class="{{experience}}" href="timeline-friends.html" title="" data-ripple="">Experience</a>
-									<a class="{{competence}}" href="groups.html" title="" data-ripple="">Competence</a>
 									<a class="{{interet}}" href="about.html" title="" data-ripple="">Centre d'intêret</a>
 									<a class="{{moded}}" href="{% url 'profil-edit-info' %}" title="" data-ripple="">Plus</a>
 								</li>
@@ -65,6 +65,7 @@
 						<div class="row" id="page-contents">
 							<div class="col-lg-3">
 								<aside class="sidebar static">
+								{% if user_viewed.id == request.user.id %}
 									<div class="widget">
 										<h4 class="widget-title">Modification Profil</h4>
 										<ul class="naves">
@@ -78,7 +79,7 @@
 											</li>
 											<li>
 												<i class="fa fa-sliders"></i>
-												<a href="edit-interest.html" title="">Competence</a>
+												<a href="{% url 'competence-info-add' %}" title="">Competence</a>
 											</li>
 											<li>
 												<i class="fa fa-briefcase"></i>
@@ -94,6 +95,7 @@
 											</li>
 										</ul>
 									</div><!-- settings widget -->	
+								{% endif %}
 									<div class="widget  stick-widget">
 										<h4 class="widget-title">Publicité Ici</h4>
 										<ul class="activitiez">
