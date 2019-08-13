@@ -284,6 +284,9 @@ def competenceInfo(request, username):
     info_user = Profil.objects.get(username_id=request.user.id)
     users_competence = Competence.objects.filter(username_id=user_viewed.id).all()
     competence = 'active'
+    if  request.user.id == user_viewed.id:
+        if len(users_competence) == 0:
+            return redirect(competenceAdd)
     return render(request, 'connexion/profil/competence-profil.html', locals())
 
 
@@ -326,13 +329,10 @@ def experienceInfo(request, username):
     info_user = Profil.objects.get(username_id=request.user.id)
     users_experience= Experience.objects.filter(username_id=user_viewed.id).order_by('-annee_debut').all()
     experience ='active'
-    '''
     if user_viewed.id == request.user.id:
-        if len(users_formation) ==0:
-            return redirect(formationAdd)
-    '''
+        if len(users_experience) ==0:
+            return redirect(experienceAdd)
     return render(request, 'connexion/profil/experience-profil.html', locals())
-
 
 
 def experienceAdd(request):
@@ -360,6 +360,7 @@ def experienceDelete(request, id):
     Experience.objects.filter(pk=id).delete()
     return redirect(experienceInfo, request.user.username)
 
+
 def infoExperienceAdd(request):
     if request.POST.get('lieu') != '':
         try:
@@ -374,6 +375,7 @@ def infoExperienceAdd(request):
             mois_fin = request.POST.get('Mois_fin'),
             annee_fin = request.POST.get('Annee_fin'),
             poste = request.POST.get('poste'),
+            description = request.POST.get('description')
             ).save()
             return redirect(experienceInfo, username=request.user.username)
     else:
@@ -394,6 +396,7 @@ def infoExperienceEdit(request):
             mois_fin = request.POST.get('Mois_fin'),
             annee_fin = request.POST.get('Annee_fin'),
             poste = request.POST.get('poste'),
+            description = request.POST.get('description')
             )
             return redirect(experienceInfo, username=request.user.username)
     else:

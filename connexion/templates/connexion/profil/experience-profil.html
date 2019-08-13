@@ -30,10 +30,18 @@
                             <h6 style="display: inline;">{{user_experience.poste}}</h6>
                             <i class="mtrl-select"></i>
                         </div>
+                        {% if user_experience.description is not None and user_experience.description != ''%}
+                          <div>
+                                <i class="mtrl-select"></i>
+                                <p class="para" style="display: block">{{user_experience.description}} </p>
+                            </div>
+                        {% endif %}
+                        {% if request.user.id == user_viewed.id %}
                        <div class="submit-btns bouton" style="margin-left:50% !important;">
 							<button type="button" style="color:#ff4b5a" Onclick="x=confirm('Etes vous sur de vouloir supprimer?');if(x){window.location='{% url 'experience-info-delete' user_experience.id %}'};" class="mtr-btn"><span>Supprimer</span></button>
 							<button type="button" class="mtr-btn" Onclick="window.location='{% url 'experience-info-edit' user_experience.id %}'"><span>Modifier</span></button>
 						</div>
+                        {% endif %}
                     </form>
                     <br>
                     {% endfor %}
