@@ -445,5 +445,36 @@
 	<script src="{% static 'connexion/js/script.js' %}"></script>
 	<script src="{% static 'connexion/js/map-init.js' %}"></script>
 	{% comment %} <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8c55_YHLvDHGACkQscgbGLtLRdxBDCfI"></script> {% endcomment %}
+	<script>
+		var x = document.getElementById('pub');
+		var cont = document.getElementById('cnt');
+		var i = 0;
+		x.addEventListener('focus',  function show_pub(){
+			if (i < 1){
+				dist = document.getElementById('publication');
+				dist.style.display = 'block';
+				}
+			i = i + 1 ;														
+				}
+		)
+
+		x.addEventListener('blur', function hide_pub(event){
+			dist = document.getElementById('publication');
+			if (event.relatedTarget == null){
+				dist.style.display = 'none';
+				i = 0;
+			}			
+		}
+		)
+	
+		cnt.addEventListener('click', function hides_pub(event){
+			dist = document.getElementById('publication');
+			if (event.target.localName == 'div'){
+				dist.style.display = 'none';
+				i = 0;
+			}	
+		}
+		) 
+	</script>
 </body>
 </html>

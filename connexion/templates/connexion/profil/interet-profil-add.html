@@ -1,0 +1,29 @@
+{% extends 'connexion/base_profil.html' %}
+{% load static %}
+
+
+	{% block profil %}
+
+        <div class="col-lg-6">
+            <div class="central-meta">
+                <div class="editing-info">
+                    <h5 class="f-title"><i class="ti-info-alt"></i> Ajouter un centre d'intérêt</h5>
+                    <form method="post" class="formcomp" action="{% url 'interet-info-add-action' %}">{% csrf_token %}                  
+                        <div class="form-group">	
+                            <input type="text" name="interet" required="required"/>
+                            <label class="control-label" for="input">Centre d'intérêt</label><i class="mtrl-select"></i>
+                        </div>
+                        <div class="form-group">	
+                            <textarea rows="4" id="textarea" name="description"></textarea>
+                            <label class="control-label" for="textarea"> Explications</label><i class="mtrl-select"></i>
+                        </div>
+                        <div class="submit-btns">
+                            <button type="submit" class="mtr-btn bouh"><span>Ajouter</span></button>
+                        </div>
+                    </form>
+                </div>
+            </div>	
+        </div><!-- centerl meta -->
+
+
+    {% endblock %}

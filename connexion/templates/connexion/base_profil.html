@@ -2,13 +2,14 @@
 {% load static %}
 {% block content %}
 
-<section>
+	<section>
 		<div class="feature-photo">
 			<figure><img style="max-height:400px !important;" src="{% static info_user_viewed.coverpic %}" alt=""></figure>
 			<div class="add-btn">
 				<span>0 Abonnés</span>
 				<a href="#" title="" data-ripple=""> Suivre </a>
 			</div>
+			{% if user_viewed.id == request.user.id%}
 			<form class="edit-phto" id="tata" action="{% url 'getimage' 'cover' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
 				<i class="fa fa-camera-retro"></i>
 				<label class="fileContainer">
@@ -16,6 +17,7 @@
 				<input type="file" name="pdc-file" accept='image/*' onchange="tata.submit()"/>
 				</label>
 			</form>
+			{% endif %}
 			<div class="container-fluid">
 				<div class="row merged">
 					<div class="col-lg-2 col-sm-3">
@@ -42,13 +44,15 @@
 								  <span>{{info_user_viewed.poste}}</span>
 								</li>
 								<li>
-									<a class="{{journal}}" href="time-line.html" title="" data-ripple="">Journal</a>
+									<a class="{{journal}}" href="{% url 'journal-info' user_viewed.username %}" title="" data-ripple="">Journal</a>
 									<a class="{{apropos}}" href="{% url 'profil-info' user_viewed.username %}" title="" data-ripple="">A propos</a>
 									<a class="{{formation}}" href="{% url 'formation-info' user_viewed.username %}" title="" data-ripple="">Formation</a>
 									<a class="{{competence}}" href="{% url 'competence-info' user_viewed.username %}" title="" data-ripple="">Competence</a>
 									<a class="{{experience}}" href="{% url 'experience-info' user_viewed.username %}" title="" data-ripple="">Experience</a>
-									<a class="{{interet}}" href="about.html" title="" data-ripple="">Centre d'intêret</a>
-									<a class="{{moded}}" href="{% url 'profil-edit-info' %}" title="" data-ripple="">Plus</a>
+									<a class="{{interet}}" href="{% url 'interet-info' user_viewed.username %}" title="" data-ripple="">Centre d'intêret</a>
+									{% if user_viewed.id == request.user.id %}
+									<a class="{{moded}}" href="#" title="" data-ripple="">Plus</a>
+									{% endif %}
 								</li>
 							</ul>
 						</div>
@@ -57,7 +61,7 @@
 			</div>
 		</div>
 	</section><!-- top area -->
-		<section>
+	<section>
 		<div class="gap gray-bg">
 			<div class="container-fluid">
 				<div class="row">
@@ -87,11 +91,11 @@
 											</li>
 											<li>
 												<i class="ti-heart"></i>
-												<a href="edit-password.html" title="">Centre d'intêret</a>
+												<a href="{% url 'interet-info-add' %}" title="">Centre d'intêret</a>
 											</li>
 											<li>
 												<i class="ti-lock"></i>
-												<a href="edit-password.html" title="">Mot de passe</a>
+												<a href="{% url 'change-pass' %}" title="">Mot de passe</a>
 											</li>
 										</ul>
 									</div><!-- settings widget -->	
@@ -148,7 +152,7 @@
 									</div>									
 								</aside>
 							</div><!-- sidebar -->
-							 {% block profil %}                 {% endblock %} 
+							{% block profil %}                 {% endblock %} 
 							<div class="col-lg-3">
 								<aside class="sidebar static">
 									<div class="widget">

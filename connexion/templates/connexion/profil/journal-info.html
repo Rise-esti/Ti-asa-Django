@@ -1,0 +1,201 @@
+{% extends 'connexion/base_profil.html' %}
+{% load static %}
+
+
+	{% block profil %} 
+        <div class="col-lg-6">
+            {% if user_viewed.id == request.user.id %}
+            <div class="central-meta item">
+                <div class="new-postbox">
+                    <figure>
+                       <img style="border-radius:50%;width:36px;height:36px" src="{% static info_user.profilpic %}" alt="">
+                    </figure>
+                    <div class="newpst-input">
+                        <form method="post" action="{% url 'publier-poste' %}" enctype="multipart/form-data" >{% csrf_token %}
+                            <textarea id="pub" name="texte" rows="2" placeholder="Publier un Offre d'emploi ou autre" required="required" ></textarea>
+                            <div class="attachments">
+                                <ul>
+                                    <li>
+                                        <i class="fa fa-music"></i>
+                                        <label class="fileContainer">
+                                            <input type="file">
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-image"></i>
+                                        <label class="fileContainer">
+                                            <input type="file" name="image" accept="image/*">
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-video-camera"></i>
+                                        <label class="fileContainer">
+                                            <input type="file">
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-file"></i>
+                                        <label class="fileContainer">
+                                            <input type="file">
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <button type="submit">Publier</button>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div id="publication" style="display:none;">
+
+                                <div class="form-group">	
+                                    <input type="text" name="mission"/>
+                                    <label class="control-label" style="font-size:14px !important;" for="input">Missions</label><i class="mtrl-select"></i>
+                                </div>
+                                <div class="form-group">	
+                                    <input type="text" name="formation"/>
+                                    <label class="control-label" style="font-size:14px !important;" for="input">Formation</label><i class="mtrl-select"></i>
+                                </div>
+                                <div class="form-group">	
+                                    <input type="text" name="experience" />
+                                    <label class="control-label"  style="font-size:14px !important;"  for="input">Experiences Minimum</label><i class="mtrl-select"></i>
+                                </div>
+                                <div class="form-group">	
+                                    <input type="text" name="competence"  />
+                                    <label class="control-label"  style="font-size:14px !important;" for="input">Competetences</label><i class="mtrl-select"></i>
+                                </div>
+                                <div class="form-group">	
+                                    <input type="text" name="personnalite" />
+                                    <label class="control-label"  style="font-size:14px !important;" for="input">Personalités</label><i class="mtrl-select"></i>
+                                </div>
+                                <div class="form-group">	
+                                    <input type="text" name="langue"/>
+                                    <label class="control-label"  style="font-size:14px !important;" for="input">Langues</label><i class="mtrl-select"></i>
+                                </div>
+                                <div class="form-group">
+                                    <fieldset style="padding-top:0.01em !important;padding-bottom:1em !important;padding-left:0.25em !important;">
+                                        <legend style="font-size:14px !important;color:#088dcd">  Date limite </legend>
+                                        <div class="form-group half" style="margin-left:1px !important;">
+                                            <select style="color:#088dcd" name='jour'>
+                                                <option value="">Jour</option>
+                                                {% for day in days %}
+                                                <option>{{day}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="form-group half" style="margin-left:5px !important;">
+                                            <select name='mois'>
+                                                <option value="">Mois</option>
+                                                <option>Janvier</option>
+                                                <option>Fevrier</option>
+                                                <option >Mars</option>
+                                                <option>Avril</option>
+                                                <option >Mai</option>
+                                                <option >Juin</option>
+                                                <option >Juillet</option>
+                                                <option >Aout</option>
+                                                <option >Septembre</option>
+                                                <option >Octobre</option>
+                                                <option >Novembre</option>
+                                                <option >Decembre</option>
+                                            </select>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                                <div class="form-group">	
+                                    <input type="text" name="lieu" />
+                                    <label class="control-label" style="font-size:14px !important;" for="input">Lieu</label><i class="mtrl-select"></i>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div><!-- add post new box -->
+            {% endif %}
+            {% for user_viewed in users_viewed %}
+                <div class="central-meta item">
+                    <div class="user-post">
+                        <div class="friend-info">
+                            <figure>
+                                <img src="{% static user_viewed.pdp  %}" alt="">
+                            </figure>
+                            <div class="friend-name">
+                                <ins><a href="{% url 'profil-info' user_viewed.username %}" title="">{{user_viewed.first_name}} {{user_viewed.last_name}}</a></ins>
+                                <span>publié: {{ user_viewed.date_upload }}</span>
+                            </div>
+                            <div class="post-meta">
+                                <div class="description">
+                                    <p style="color:#999;font-size:16px">
+                                    {{ user_viewed.legende}}
+                                    </p>
+                                <div>
+                                    {% if user_viewed.mission != '' and user_viewed.mission is not None  %}
+                                        <h5 class="laline" style="display: inline;color:#088dcd;font-weight:Bold;">Mission </h5> 
+                                        <p class="para" style="display: block; color:#333;">
+                                        {% for mission in user_viewed.mission %}
+                                            <li style="margin-left:50px !important;"> {{mission}} </li>
+                                        {% endfor %}
+                                    {% endif %}
+                                        </p>
+                                        <i class="mtrl-select"></i>
+                                    {% if user_viewed.formation != '' and user_viewed.formation is not None%}
+                                        <h5 class="laline" style="display: inline;color:#088dcd;font-weight:Bold;">Formation :</h5> 
+                                        <p class="para" style="display: block; color:#333">
+                                        {% for formation in user_viewed.formation %}
+                                            <li style="margin-left:50px !important;"> {{formation}} </li>
+                                        {% endfor %}
+                                        </p>
+                                        <i class="mtrl-select"></i>
+                                    {% endif %}
+                                    {% if user_viewed.experience != '' and user_viewed.experience is not None  %}
+                                        <h5 class="laline" style="display: inline;color:#088dcd;font-weight:Bold;">Experience :</h5> 
+                                        <p class="para" style="display: block; color:#333;">
+                                        {% for experience in user_viewed.experience %}
+                                            <li style="margin-left:50px !important;"> {{experience}} </li>
+                                        {% endfor %}
+                                        </p>
+                                        <i class="mtrl-select"></i>
+                                    {% endif %}
+                                    {% if user_viewed.competence != '' and user_viewed.competence is not None %}
+                                        <h5 class="laline" style="display: inline;color:#088dcd;font-weight:Bold;">Competence :</h5> 
+                                        <p class="para" style="display: block; color:#333;">
+                                        {% for competence in user_viewed.competence %}
+                                            <li style="margin-left:50px !important;"> {{competence}} </li>
+                                        {% endfor %}
+                                        </p>
+                                        <i class="mtrl-select"></i>
+                                    {% endif %}
+                                                                                                
+                                    {% if user_viewed.langue != '' and user_viewed.langue is not None %}
+                                        <h5 class="laline" style="display: inline;color:#088dcd;font-weight:Bold;">Langue:</h5>
+                                        <p class="para" style="display: block;">
+                                        {% for langue in user_viewed.langue%}
+                                            <li style="margin-left:50px !important;"> {{langue}} </li>
+                                        {% endfor %}
+                                        </p>
+                                        <i class="mtrl-select"></i>
+                                    {% endif %}
+                                    {% if user_viewed.date_limit_mois != '' and user_viewed.date_limit_mois is not None %}
+                                        <h5 class="laline" style="display: inline;color:#088dcd;font-weight:Bold;">Date Limite:</h5> 
+                                        <p class="para" style="display: block; color:#333;">{{user_viewed.date_limit_jour}} {{user_viewed.date_limit_mois}}</p>
+                                        <i class="mtrl-select"></i>
+                                    {% endif %}
+                                    {% if user_viewed.lieu != '' and user_viewed.lieu is not None%}
+                                        <h5 class="laline" style="display: inline;color:#088dcd;font-weight:Bold;">Lieu:</h5> 
+                                        <p class="para" style="display: block; color:#333;"> {{user_viewed.lieu}} </p>
+                                        <i class="mtrl-select"></i>
+                                    {% endif %}
+                                </div> 
+                            </div>
+                            {% if user_viewed.image != '' and user_viewed.image is not None %}
+                                <img src="{% static user_viewed.image %}" alt="">
+                            {% endif %}
+                        
+                        </div>
+                    </div>
+                    
+                </div>
+           
+        </div><!-- centerl meta -->
+         {% endfor %}
+        </div>
+
+    {% endblock %}

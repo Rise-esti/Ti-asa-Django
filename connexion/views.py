@@ -1,10 +1,11 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.urls import reverse
+from django.utils import timezone
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from .models import Profil, Formation, Competence, Experience
+from .models import Profil, Formation, Competence, Experience, Interet, Publication
 import random, datetime, time, os
 
 # Create your views here.
@@ -26,7 +27,16 @@ def upload_file(req, ino):
                 destination.write(chunk)
         Profil.objects.filter(username_id=req.user.id).update(coverpic='connexion/images/Picture/cover/'+str(req.user.id)+'_'+str(time.time())+'.png')
 
+
+@login_required
+def changePasswd(request):
+    user_viewed = User.objects.get(pk=request.user.id)
+    info_user_viewed = Profil.objects.get(username_id=user_viewed.id)
+    info_user = Profil.objects.get(username_id=request.user.id)
+    moded ='active'
+    return render(request, 'connexion/profil/edit-password.html', locals())
     
+
 def connect(request):
     if request.method == "POST":
         email = request.POST.get('mail').lower()
@@ -74,8 +84,29 @@ def index(request):
 
 @login_required
 def home(request):
-    info_user = Profil.objects.get(username_id=request.user.id)                 
-    return render(request, 'connexion/home.html', locals())
+    info_user = Profil.objects.get(username_id=request.user.id)
+    pubs = Publication.objects.filter(valable=True).order_by('-id')
+    users_viewed = []
+    for user_viewed in pubs:
+        user = User.objects.get(pk=user_viewed.username_id)
+        user_viewed.first_name = user.first_name
+        user_viewed.last_name = user.last_name
+        if user_viewed.langue != '' and user_viewed.langue is not None:
+            user_viewed.langue = user_viewed.langue.split(';')
+        if user_viewed.mission != '' and user_viewed.mission is not None:
+            user_viewed.mission = user_viewed.mission.split(';')
+        if user_viewed.competence != '' and user_viewed.competence is not None:
+            user_viewed.competence = user_viewed.competence.split(';')
+        if user_viewed.experience != '' and user_viewed.experience is not None:
+            user_viewed.experience = user_viewed.experience.split(';')
+        if user_viewed.formation != '' and user_viewed.formation is not None:
+            user_viewed.formation = user_viewed.formation.split(';')
+        profil = Profil.objects.get(username_id=user_viewed.username_id)
+        user_viewed.pdp = profil.profilpic 
+        users_viewed.append(user_viewed)
+    days = [x for x in range(1, 32)]
+    context = {'info_user':info_user, 'users_viewed':users_viewed, 'days':days}          
+    return render(request, 'connexion/home.html', context)
 
 
 @login_required
@@ -401,3 +432,124 @@ def infoExperienceEdit(request):
             return redirect(experienceInfo, username=request.user.username)
     else:
         return HttpResponse("Il faut entrer le lieu du formation")
+
+
+def interetAdd(request):
+    user_viewed = get_object_or_404(User, username=request.user.username)
+    info_user_viewed = Profil.objects.get(username_id=user_viewed.id)
+    info_user = Profil.objects.get(username_id=request.user.id)
+    moded = 'active'
+
+    return render(request, 'connexion/profil/interet-profil-add.html', locals())
+
+
+def interetEdit(request, id):
+    user_viewed = get_object_or_404(User, username=request.user.username)
+    info_user_viewed = Profil.objects.get(username_id=user_viewed.id)
+    info_user = Profil.objects.get(username_id=request.user.id)
+    moded ='active'
+
+    user_interet= Interet.objects.get(pk=id)
+
+    return render(request, 'connexion/profil/interet-profil-edit.html', locals())
+
+
+def interetInfo(request, username):
+    user_viewed = get_object_or_404(User, username=username)
+    info_user_viewed = Profil.objects.get(username_id=user_viewed.id)
+    info_user = Profil.objects.get(username_id=request.user.id)
+    users_interet = Interet.objects.filter(username_id=user_viewed.id).all()
+    interet ='active'
+    if user_viewed.id == request.user.id:
+        if len(users_interet) ==0:
+            return redirect(interetAdd)
+    return render(request, 'connexion/profil/interet-profil.html', locals())
+
+
+def infoInteretAdd(request):
+    Interet(username_id=request.user.id , interet=request.POST.get('interet'), description=request.POST.get('description')).save()
+    return redirect(interetInfo, request.user.username)
+
+
+def interetDelete(request, id):
+    Interet.objects.filter(pk=id).delete()
+    return redirect(interetInfo, request.user.username)
+
+
+def infoInteretEdit(request):
+    Interet.objects.filter(pk=request.POST.get('id')).update(interet=request.POST.get('interet'), description=request.POST.get('description'))
+    return redirect(interetInfo, request.user.username)
+
+
+def publier(request):
+
+    try:
+        datelimit_jour = int(request.POST.get('jour'))
+    except:
+        datelimit_jour = None
+
+    try:
+        image = publish_image(request)
+    except:
+       image = ''
+
+    Publication(username_id=request.user.id,
+    legende = request.POST.get('texte'),
+    experience = request.POST.get('experience'),
+    formation = request.POST.get('formation'),
+    competence = request.POST.get('competence'),
+    personnalite = request.POST.get('personnalite'),
+    langue = request.POST.get('langue'),
+    image = image,
+    date_limit_jour = datelimit_jour,
+    date_limit_mois = request.POST.get('mois'),
+    lieu = request.POST.get('lieu'),
+    mission = request.POST.get('mission')
+    ).save()
+    return redirect(home)
+
+
+def publish_image(req):
+    with open('connexion/static/connexion/images/Picture/pub/'+str(req.user.id)+'_'+str(time.time())[:10]+'.png', 'wb+') as destination:
+        for chunk in req.FILES.get('image').chunks():
+            destination.write(chunk)
+    return 'connexion/images/Picture/pub/'+str(req.user.id)+'_'+str(time.time())[:10]+'.png'
+
+
+def updatePasswd(request):
+    Personne = User.objects.get(pk=request.user.id)
+    if Personne.check_password(request.POST.get('ex-mdp')):
+        Personne.set_password(request.POST.get('new-mdp'))
+        Personne.save()
+        user = authenticate(username=Personne.username, password=request.POST.get('new-mdp'))
+        login(request, user)
+        
+    return redirect(changePasswd)
+
+def infoJournal(request, username):
+    user_viewed = User.objects.get(username=username) 
+    pubs = Publication.objects.filter(valable=True, username_id=user_viewed.id).order_by('-id')
+    users_viewed = []
+    for user_viewed in pubs:
+        user = User.objects.get(pk=user_viewed.username_id)
+        user_viewed.first_name = user.first_name
+        user_viewed.last_name = user.last_name
+        if user_viewed.langue != '' and user_viewed.langue is not None:
+            user_viewed.langue = user_viewed.langue.split(';')
+        if user_viewed.mission != '' and user_viewed.mission is not None:
+            user_viewed.mission = user_viewed.mission.split(';')
+        if user_viewed.competence != '' and user_viewed.competence is not None:
+            user_viewed.competence = user_viewed.competence.split(';')
+        if user_viewed.experience != '' and user_viewed.experience is not None:
+            user_viewed.experience = user_viewed.experience.split(';')
+        if user_viewed.formation != '' and user_viewed.formation is not None:
+            user_viewed.formation = user_viewed.formation.split(';')
+        profil = Profil.objects.get(username_id=user_viewed.username_id)
+        user_viewed.pdp = profil.profilpic 
+        users_viewed.append(user_viewed)
+    days = [x for x in range(1, 32)]
+    user_viewed = User.objects.get(username=username)
+    info_user_viewed = Profil.objects.get(username_id=user_viewed.id)
+    info_user = Profil.objects.get(username_id=request.user.id)
+    context = {'info_user':info_user, 'users_viewed':users_viewed, 'days':days, 'user_viewed':user_viewed, 'info_user_viewed':info_user_viewed, 'journal':'active'}          
+    return render(request, 'connexion/profil/journal-info.html', context)

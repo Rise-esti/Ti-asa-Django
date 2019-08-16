@@ -11,7 +11,7 @@
 					
 					<form method="post" class="formcomp" action="{% url 'formation-info-add-action' %}">{% csrf_token %}
 						<div class="form-group">	
-							<input type="text" name="lieu" required="required" />
+							<input type="text" name="lieu"   required="required" />
 							<label class="control-label" for="input">Ecole/institut/autres</label><i class="mtrl-select"></i>
 						</div>
 						<div class="form-group">
@@ -37,7 +37,7 @@
 						<div class="form-group half">	
 							<select name='Annee_deb'>
 								<option>Annee</option>
-									{% for year in years%}
+								{% for year in years%}
 										<option>{{year}}</option>
 								{% endfor %}
 							</select>

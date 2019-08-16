@@ -81,7 +81,7 @@ WSGI_APPLICATION = 'ti_asa.wsgi.application'
 
 DATABASES = {
        'default': {
-        'ENGINE': 'mysql.connector.django',   # Backends disponibles : 'postgresql', 'mysql', 'sqlite3' et 'oracle'.
+        'ENGINE': 'django.db.backends.mysql',   # Backends disponibles : 'postgresql', 'mysql', 'sqlite3' et 'oracle'.
         'NAME': 'tiasa',             # Nom de la base de données
         'USER': 'gaetan',
         'PASSWORD': 'gaetan',        

@@ -11,51 +11,27 @@
 							<div class="col-lg-3">
 								<aside class="sidebar static">
 									<div class="widget">
-										<h4 class="widget-title">Ti-ASA INNOVATION</h4>
+										<h4 class="widget-title">Ti-ASA Service Profesionnel</h4>
 										<ul class="naves">
 											<li>
 												<i class="ti-clipboard"></i>
-												<a href="newsfeed.html" title="">Auto-envoie CV en Mail</a>
+												<a href="#" title="">Auto-envoie CV par Mail</a>
 											</li>
 											<li>
 												<i class="ti-mouse-alt"></i>
-												<a href="inbox.html" title="">Generateur de CV</a>
+												<a href="#" title="">Generateur de CV</a>
 											</li>
 											<li>
 												<i class="ti-files"></i>
-												<a href="fav-page.html" title="">Pages de recrutement</a>
+												<a href="#" title="">Pages de recrutement</a>
 											</li>
 											<li>
 												<i class="ti-user"></i>
-												<a href="timeline-friends.html" title="">Reseau Profesiionel</a>
+												<a href="#" title="">Reseau Profesionel</a>
 											</li>
 											<li>
-												<i class="ti-image"></i>
-												<a href="timeline-photos.html" title="">Annonce en Image</a>
-											</li>
-											<li>
-												<i class="ti-video-camera"></i>
-												<a href="timeline-videos.html" title="">Interview en ligne</a>
-											</li>
-											<li>
-												<i class="ti-comments-smiley"></i>
-												<a href="messages.html" title="">Messages</a>
-											</li>
-											<li>
-												<i class="ti-bell"></i>
-												<a href="notifications.html" title="">Notifications</a>
-											</li>
-											<li>
-												<i class="ti-share"></i>
-												<a href="people-nearby.html" title="">Prédiction de besoin</a>
-											</li>
-											<li>
-												<i class="fa fa-bar-chart-o"></i>
-												<a href="insights.html" title="">Statistique de besoin</a>
-											</li>
-											<li>
-												<i class="ti-power-off"></i>
-												<a href="{% url 'deconnect' %}" title="">Deconnexion avec Job</a>
+												<i class="ti-user"></i>
+												<a href="#" title="">Suggestion Profil/Offre</a>
 											</li>
 										</ul>
 									</div><!-- Shortcuts -->
@@ -110,59 +86,22 @@
 												</div>
 											</li>
 										</ul>
-										{% comment %}  
-										<ul class="followers">
-											<li>
-												<figure><img src="{% static 'connexion/images/resources/friend-avatar2.jpg' %}" alt=""></figure>
-												<div class="friend-meta">
-													<h4><a href="time-line.html" title="">Kelly Bill</a></h4>
-													<a href="#" title="" class="underline">Add Friend</a>
-												</div>
-											</li>
-											<li>
-												<figure><img src="{% static 'connexion/images/resources/friend-avatar4.jpg' %}" alt=""></figure>
-												<div class="friend-meta">
-													<h4><a href="time-line.html" title="">Issabel</a></h4>
-													<a href="#" title="" class="underline">Add Friend</a>
-												</div>
-											</li>
-											<li>
-												<figure><img src="{% static 'connexion/images/resources/friend-avatar6.jpg' %}" alt=""></figure>
-												<div class="friend-meta">
-													<h4><a href="time-line.html" title="">Andrew</a></h4>
-													<a href="#" title="" class="underline">Add Friend</a>
-												</div>
-											</li>
-											<li>
-												<figure><img src="{% static 'connexion/images/resources/friend-avatar8.jpg' %}" alt=""></figure>
-												<div class="friend-meta">
-													<h4><a href="time-line.html" title="">Sophia</a></h4>
-													<a href="#" title="" class="underline">Add Friend</a>
-												</div>
-											</li>
-											<li>
-												<figure><img src="{% static 'connexion/images/resources/friend-avatar3.jpg' %}" alt=""></figure>
-												<div class="friend-meta">
-													<h4><a href="time-line.html" title="">Allen</a></h4>
-													<a href="#" title="" class="underline">Add Friend</a>
-												</div>
-											</li>
-										</ul> {% endcomment %}
 									</div><!-- who's following -->
 								</aside>
 							</div><!-- sidebar -->
 							<div class="col-lg-6">
 							 
 								<div class="central-meta">
-									<div class="new-postbox">
+									<div class="new-postbox", id='cnt'>
 											<figure>
 
 												<img style="border-radius:50%;width:36px;height:36px" src="{% static info_user.profilpic %}" alt="">
 
 											</figure>
 											<div class="newpst-input">
-												<form method="post">
-													<textarea rows="2" placeholder="write something"></textarea>
+										
+												<form method="post" action="{% url 'publier-poste' %}" enctype="multipart/form-data" >{% csrf_token %}
+													<textarea id="pub" name="texte" rows="2" placeholder="Publier un Offre d'emploi ou autre" required="required" ></textarea>
 													<div class="attachments">
 														<ul>
 															<li>
@@ -174,7 +113,7 @@
 															<li>
 																<i class="fa fa-image"></i>
 																<label class="fileContainer">
-																	<input type="file">
+																	<input type="file" name="image" accept="image/*">
 																</label>
 															</li>
 															<li>
@@ -184,587 +123,171 @@
 																</label>
 															</li>
 															<li>
-																<i class="fa fa-camera"></i>
+																<i class="fa fa-file"></i>
 																<label class="fileContainer">
 																	<input type="file">
 																</label>
 															</li>
 															<li>
-																<button type="submit">Post</button>
+																<button type="submit">Publier</button>
 															</li>
 														</ul>
 													</div>
+													<div id="publication" style="display:none;">
+
+														<div class="form-group">	
+															<input type="text" name="mission"/>
+															<label class="control-label" style="font-size:14px !important;" for="input">Missions</label><i class="mtrl-select"></i>
+														</div>
+														<div class="form-group">	
+															<input type="text" name="formation"/>
+															<label class="control-label" style="font-size:14px !important;" for="input">Formation</label><i class="mtrl-select"></i>
+														</div>
+														<div class="form-group">	
+															<input type="text" name="experience" />
+															<label class="control-label"  style="font-size:14px !important;"  for="input">Experiences Minimum</label><i class="mtrl-select"></i>
+														</div>
+														<div class="form-group">	
+															<input type="text" name="competence"  />
+															<label class="control-label"  style="font-size:14px !important;" for="input">Competetences</label><i class="mtrl-select"></i>
+														</div>
+														<div class="form-group">	
+															<input type="text" name="personnalite" />
+															<label class="control-label"  style="font-size:14px !important;" for="input">Personalités</label><i class="mtrl-select"></i>
+														</div>
+														<div class="form-group">	
+															<input type="text" name="langue"/>
+															<label class="control-label"  style="font-size:14px !important;" for="input">Langues</label><i class="mtrl-select"></i>
+														</div>
+														<div class="form-group">
+															<fieldset style="padding-top:0.01em !important;padding-bottom:1em !important;padding-left:0.25em !important;">
+																<legend style="font-size:14px !important;color:#088dcd">  Date limite </legend>
+																<div class="form-group half" style="margin-left:1px !important;">
+																	<select style="color:#088dcd" name='jour'>
+																		<option value="">Jour</option>
+																		{% for day in days %}
+																		<option>{{day}}</option>
+																		{% endfor %}
+																	</select>
+																</div>
+																<div class="form-group half" style="margin-left:5px !important;">
+																	<select name='mois'>
+																		<option value="">Mois</option>
+																		<option>Janvier</option>
+																		<option>Fevrier</option>
+																		<option >Mars</option>
+																		<option>Avril</option>
+																		<option >Mai</option>
+																		<option >Juin</option>
+																		<option >Juillet</option>
+																		<option >Aout</option>
+																		<option >Septembre</option>
+																		<option >Octobre</option>
+																		<option >Novembre</option>
+																		<option >Decembre</option>
+																	</select>
+																</div>
+														  	</fieldset>
+														</div>
+														<div class="form-group">	
+															<input type="text" name="lieu" />
+															<label class="control-label" style="font-size:14px !important;" for="input">Lieu</label><i class="mtrl-select"></i>
+														</div>
+													</div>
 												</form>
+												
 											</div>
 										</div>
 									</div><!-- add post new box -->
-									{% comment %} 
-									<div class="loadMore">
-									<div class="central-meta item">
-										<div class="user-post">
-											<div class="friend-info">
-												<figure>
-													<img src="{% static 'connexion/images/resources/friend-avatar10.jpg' %}" alt="">
-												</figure>
-												<div class="friend-name">
-													<ins><a href="time-line.html" title="">Janice Griffith</a></ins>
-													<span>published: june,2 2018 19:PM</span>
-												</div>
-												<div class="post-meta">
-													<img src="{% static 'connexion/images/resources/user-post.jpg' %}" alt="">
-													<div class="we-video-info">
-														<ul>
-															<li>
-																<span class="views" data-toggle="tooltip" title="views">
-																	<i class="fa fa-eye"></i>
-																	<ins>1.2k</ins>
-																</span>
-															</li>
-															<li>
-																<span class="comment" data-toggle="tooltip" title="Comments">
-																	<i class="fa fa-comments-o"></i>
-																	<ins>52</ins>
-																</span>
-															</li>
-															<li>
-																<span class="like" data-toggle="tooltip" title="like">
-																	<i class="ti-heart"></i>
-																	<ins>2.2k</ins>
-																</span>
-															</li>
-															<li>
-																<span class="dislike" data-toggle="tooltip" title="dislike">
-																	<i class="ti-heart-broken"></i>
-																	<ins>200</ins>
-																</span>
-															</li>
-															<li class="social-media">
-																<div class="menu">
-																<div class="btn trigger"><i class="fa fa-share-alt"></i></div>
-																<div class="rotater">
-																	<div class="btn btn-icon"><a href="#" title=""><i class="fa fa-html5"></i></a></div>
-																</div>
-																<div class="rotater">
-																	<div class="btn btn-icon"><a href="#" title=""><i class="fa fa-facebook"></i></a></div>
-																</div>
-																<div class="rotater">
-																	<div class="btn btn-icon"><a href="#" title=""><i class="fa fa-google-plus"></i></a></div>
-																</div>
-																<div class="rotater">
-																	<div class="btn btn-icon"><a href="#" title=""><i class="fa fa-twitter"></i></a></div>
-																</div>
-																<div class="rotater">
-																	<div class="btn btn-icon"><a href="#" title=""><i class="fa fa-css3"></i></a></div>
-																</div>
-																<div class="rotater">
-																	<div class="btn btn-icon"><a href="#" title=""><i class="fa fa-instagram"></i></a>
-																	</div>
-																</div>
-																	<div class="rotater">
-																	<div class="btn btn-icon"><a href="#" title=""><i class="fa fa-dribbble"></i></a>
-																	</div>
-																</div>
-																<div class="rotater">
-																	<div class="btn btn-icon"><a href="#" title=""><i class="fa fa-pinterest"></i></a>
-																	</div>
-																</div>
+									
+									{% for user_viewed in users_viewed %}
 
-																</div>
-															</li>
-														</ul>
+										<div class="central-meta item">
+											<div class="user-post">
+												<div class="friend-info">
+													<figure>
+														<img src="{% static user_viewed.pdp  %}" alt="">
+													</figure>
+													<div class="friend-name">
+														<ins><a href="{% url 'profil-info' user_viewed.username %}" title="">{{user_viewed.first_name}} {{user_viewed.last_name}}</a></ins>
+														<span>publié: {{ user_viewed.date_upload }}</span>
 													</div>
-													<div class="description">
-														
-														<p>
-															World's most beautiful car in Curabitur <a href="#" title="">#test drive booking !</a> the most beatuiful car available in america and the saudia arabia, you can book your test drive by our official website
-														</p>
-													</div>
-												</div>
-											</div>
-											<div class="coment-area">
-												<ul class="we-comet">
-													<li>
-														<div class="comet-avatar">
-															<img src="{% static 'connexion/images/resources/comet-1.jpg' %}" alt="">
-														</div>
-														<div class="we-comment">
-															<div class="coment-head">
-																<h5><a href="time-line.html" title="">Jason borne</a></h5>
-																<span>1 year ago</span>
-																<a class="we-reply" href="#" title="Reply"><i class="fa fa-reply"></i></a>
-															</div>
-															<p>we are working for the dance and sing songs. this car is very awesome for the youngster. please vote this car and like our post</p>
-														</div>
-														<ul>
-															<li>
-																<div class="comet-avatar">
-																	<img src="{% static 'connexion/images/resources/comet-2.jpg' %}" alt="">
-																</div>
-																<div class="we-comment">
-																	<div class="coment-head">
-																		<h5><a href="time-line.html" title="">alexendra dadrio</a></h5>
-																		<span>1 month ago</span>
-																		<a class="we-reply" href="#" title="Reply"><i class="fa fa-reply"></i></a>
-																	</div>
-																	<p>yes, really very awesome car i see the features of this car in the official website of <a href="#" title="">#Mercedes-Benz</a> and really impressed :-)</p>
-																</div>
-															</li>
-															<li>
-																<div class="comet-avatar">
-																	<img src="{% static 'connexion/images/resources/comet-3.jpg' %}" alt="">
-																</div>
-																<div class="we-comment">
-																	<div class="coment-head">
-																		<h5><a href="time-line.html" title="">Olivia</a></h5>
-																		<span>16 days ago</span>
-																		<a class="we-reply" href="#" title="Reply"><i class="fa fa-reply"></i></a>
-																	</div>
-																	<p>i like lexus cars, lexus cars are most beautiful with the awesome features, but this car is really outstanding than lexus</p>
-																</div>
-															</li>
-														</ul>
-													</li>
-													<li>
-														<div class="comet-avatar">
-															<img src="{% static 'connexion/images/resources/comet-1.jpg' %}" alt="">
-														</div>
-														<div class="we-comment">
-															<div class="coment-head">
-																<h5><a href="time-line.html" title="">Donald Trump</a></h5>
-																<span>1 week ago</span>
-																<a class="we-reply" href="#" title="Reply"><i class="fa fa-reply"></i></a>
-															</div>
-															<p>we are working for the dance and sing songs. this video is very awesome for the youngster. please vote this video and like our channel
-																<i class="em em-smiley"></i>
+													<div class="post-meta">
+														<div class="description">
+															<p style="color:#999;font-size:16px">
+															{{ user_viewed.legende}}
 															</p>
-														</div>
-													</li>
-													<li>
-														<a href="#" title="" class="showmore underline">more comments</a>
-													</li>
-													<li class="post-comment">
-														<div class="comet-avatar">
-															<img src="{% static 'connexion/images/resources/comet-1.jpg' %}" alt="">
-														</div>
-														<div class="post-comt-box">
-															<form method="post">
-																<textarea placeholder="Post your comment"></textarea>
-																<div class="add-smiles">
-																	<span class="em em-expressionless" title="add icon"></span>
-																</div>
-																<div class="smiles-bunch">
-																	<i class="em em---1"></i>
-																	<i class="em em-smiley"></i>
-																	<i class="em em-anguished"></i>
-																	<i class="em em-laughing"></i>
-																	<i class="em em-angry"></i>
-																	<i class="em em-astonished"></i>
-																	<i class="em em-blush"></i>
-																	<i class="em em-disappointed"></i>
-																	<i class="em em-worried"></i>
-																	<i class="em em-kissing_heart"></i>
-																	<i class="em em-rage"></i>
-																	<i class="em em-stuck_out_tongue"></i>
-																</div>
-																<button type="submit"></button>
-															</form>	
-														</div>
-													</li>
-												</ul>
+														<div>
+															{% if user_viewed.mission != '' and user_viewed.mission is not None  %}
+																<h5 class="laline" style="display: inline;color:#088dcd;font-weight:Bold;">Mission </h5> 
+																<p class="para" style="display: block; color:#333;">
+																{% for mission in user_viewed.mission %}
+																	<li style="margin-left:50px !important;"> {{mission}} </li>
+																{% endfor %}
+															{% endif %}
+																</p>
+																<i class="mtrl-select"></i>
+															{% if user_viewed.formation != '' and user_viewed.formation is not None%}
+																<h5 class="laline" style="display: inline;color:#088dcd;font-weight:Bold;">Formation :</h5> 
+																<p class="para" style="display: block; color:#333">
+																{% for formation in user_viewed.formation %}
+																	<li style="margin-left:50px !important;"> {{formation}} </li>
+																{% endfor %}
+																</p>
+																<i class="mtrl-select"></i>
+															{% endif %}
+															{% if user_viewed.experience != '' and user_viewed.experience is not None  %}
+																<h5 class="laline" style="display: inline;color:#088dcd;font-weight:Bold;">Experience :</h5> 
+																<p class="para" style="display: block; color:#333;">
+																{% for experience in user_viewed.experience %}
+																	<li style="margin-left:50px !important;"> {{experience}} </li>
+																{% endfor %}
+																</p>
+																<i class="mtrl-select"></i>
+															{% endif %}
+															{% if user_viewed.competence != '' and user_viewed.competence is not None %}
+																<h5 class="laline" style="display: inline;color:#088dcd;font-weight:Bold;">Competence :</h5> 
+																<p class="para" style="display: block; color:#333;">
+																{% for competence in user_viewed.competence %}
+																	<li style="margin-left:50px !important;"> {{competence}} </li>
+																{% endfor %}
+																</p>
+																<i class="mtrl-select"></i>
+															{% endif %}
+																														
+															{% if user_viewed.langue != '' and user_viewed.langue is not None %}
+																<h5 class="laline" style="display: inline;color:#088dcd;font-weight:Bold;">Langue:</h5>
+																<p class="para" style="display: block;">
+																{% for langue in user_viewed.langue%}
+																	<li style="margin-left:50px !important;"> {{langue}} </li>
+																{% endfor %}
+																</p>
+																<i class="mtrl-select"></i>
+															{% endif %}
+															{% if user_viewed.date_limit_mois != '' and user_viewed.date_limit_mois is not None %}
+																<h5 class="laline" style="display: inline;color:#088dcd;font-weight:Bold;">Date Limite:</h5> 
+																<p class="para" style="display: block; color:#333;">{{user_viewed.date_limit_jour}} {{user_viewed.date_limit_mois}}</p>
+																<i class="mtrl-select"></i>
+															{% endif %}
+															{% if user_viewed.lieu != '' and user_viewed.lieu is not None%}
+																<h5 class="laline" style="display: inline;color:#088dcd;font-weight:Bold;">Lieu:</h5> 
+																<p class="para" style="display: block; color:#333;"> {{user_viewed.lieu}} </p>
+																<i class="mtrl-select"></i>
+															{% endif %}
+														</div> 
+													</div>
+													{% if user_viewed.image != '' and user_viewed.image is not None %}
+														<img src="{% static user_viewed.image %}" alt="">
+													{% endif %}
+												
+												</div>
 											</div>
+											
 										</div>
 									</div>
-									<div class="central-meta item">
-										<div class="user-post">
-											<div class="friend-info">
-												<figure>
-													<img src="{% static 'connexion/images/resources/nearly1.jpg' %}" alt="">
-												</figure>
-												<div class="friend-name">
-													<ins><a href="time-line.html" title="">Sara Grey</a></ins>
-													<span>published: june,2 2018 19:PM</span>
-												</div>
-												<div class="post-meta">
-													<iframe src="https://player.vimeo.com/video/15232052" height="315" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-													<div class="we-video-info">
-														<ul>
-															<li>
-																<span class="views" data-toggle="tooltip" title="views">
-																	<i class="fa fa-eye"></i>
-																	<ins>1.2k</ins>
-																</span>
-															</li>
-															<li>
-																<span class="comment" data-toggle="tooltip" title="Comments">
-																	<i class="fa fa-comments-o"></i>
-																	<ins>52</ins>
-																</span>
-															</li>
-															<li>
-																<span class="like" data-toggle="tooltip" title="like">
-																	<i class="ti-heart"></i>
-																	<ins>2.2k</ins>
-																</span>
-															</li>
-															<li>
-																<span class="dislike" data-toggle="tooltip" title="dislike">
-																	<i class="ti-heart-broken"></i>
-																	<ins>200</ins>
-																</span>
-															</li>
-															<li class="social-media">
-																<div class="menu">
-																<div class="btn trigger"><i class="fa fa-share-alt"></i></div>
-																<div class="rotater">
-																	<div class="btn btn-icon"><a href="#" title=""><i class="fa fa-html5"></i></a></div>
-																</div>
-																<div class="rotater">
-																	<div class="btn btn-icon"><a href="#" title=""><i class="fa fa-facebook"></i></a></div>
-																</div>
-																<div class="rotater">
-																	<div class="btn btn-icon"><a href="#" title=""><i class="fa fa-google-plus"></i></a></div>
-																</div>
-																<div class="rotater">
-																	<div class="btn btn-icon"><a href="#" title=""><i class="fa fa-twitter"></i></a></div>
-																</div>
-																<div class="rotater">
-																	<div class="btn btn-icon"><a href="#" title=""><i class="fa fa-css3"></i></a></div>
-																</div>
-																<div class="rotater">
-																	<div class="btn btn-icon"><a href="#" title=""><i class="fa fa-instagram"></i></a>
-																	</div>
-																</div>
-																	<div class="rotater">'_'+str(time.time())
-																	<div class="btn btn-icon"><a href="#" title=""><i class="fa fa-dribbble"></i></a>
-																	</div>
-																</div>
-																<div class="rotater">
-																	<div class="btn btn-icon"><a href="#" title=""><i class="fa fa-pinterest"></i></a>
-																	</div>
-																</div>
 
-																</div>
-															</li>
-														</ul>
-													</div>
-													<div class="description">
-														
-														<p>
-															Lonely Cat Enjoying in Summer Curabitur <a href="#" title="">#mypage</a> ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc,
-														</p>
-													</div>
-												</div>
-											</div>
-											<div class="coment-area">
-												<ul class="we-comet">
-													<li>
-														<div class="comet-avatar">
-															<img src="{% static 'connexion/images/resources/comet-1.jpg' %}" alt="">
-														</div>
-														<div class="we-comment">
-															<div class="coment-head">
-																<h5><a href="time-line.html" title="">Jason borne</a></h5>
-																<span>1 year ago</span>
-																<a class="we-reply" href="#" title="Reply"><i class="fa fa-reply"></i></a>
-															</div>
-															<p>we are working for the dance and sing songs. this video is very awesome for the youngster. please vote this video and like our channel</p>
-														</div>
 
-													</li>
-													<li>
-														<div class="comet-avatar">
-															<img src="{% static 'connexion/images/resources/comet-2.jpg' %}" alt="">
-														</div>
-														<div class="we-comment">
-															<div class="coment-head">
-																<h5><a href="time-line.html" title="">Sophia</a></h5>
-																<span>1 week ago</span>
-																<a class="we-reply" href="#" title="Reply"><i class="fa fa-reply"></i></a>
-															</div>
-															<p>we are working for the dance and sing songs. this video is very awesome for the youngster.
-																<i class="em em-smiley"></i>
-															</p>
-														</div>
-													</li>
-													<li>
-														<a href="#" title="" class="showmore underline">more comments</a>
-													</li>
-													<li class="post-comment">
-														<div class="comet-avatar">
-															<img src="{% static 'connexion/images/resources/comet-2.jpg' %}" alt="">
-														</div>
-														<div class="post-comt-box">
-															<form method="post">
-																<textarea placeholder="Post your comment"></textarea>
-																<div class="add-smiles">
-																	<span class="em em-expressionless" title="add icon"></span>
-																</div>
-																<div class="smiles-bunch">
-																	<i class="em em---1"></i>
-																	<i class="em em-smiley"></i>
-																	<i class="em em-anguished"></i>
-																	<i class="em em-laughing"></i>
-																	<i class="em em-angry"></i>
-																	<i class="em em-astonished"></i>
-																	<i class="em em-blush"></i>
-																	<i class="em em-disappointed"></i>
-																	<i class="em em-worried"></i>
-																	<i class="em em-kissing_heart"></i>
-																	<i class="em em-rage"></i>
-																	<i class="em em-stuck_out_tongue"></i>
-																</div>
-																<button type="submit"></button>
-															</form>	
-														</div>
-													</li>
-												</ul>
-											</div>
-										</div>
-									</div>
-									<div class="central-meta item">
-										<div class="user-post">
-											<div class="friend-info">
-												<figure>
-													<img src="{% static 'connexion/images/resources/nearly6.jpg' %}" alt="">
-												</figure>
-												<div class="friend-name">
-													<ins><a href="time-line.html" title="">Sophia</a></ins>
-													<span>published: january,5 2018 19:PM</span>
-												</div>
-												<div class="post-meta">
-													<div class="post-map">
-														<div class="nearby-map">
-															<div id="map-canvas"></div>
-														</div>
-													</div><!-- near by map -->
-													<div class="we-video-info">
-														<ul>
-															<li>
-																<span class="views" data-toggle="tooltip" title="views">
-																	<i class="fa fa-eye"></i>
-																	<ins>1.2k</ins>
-																</span>
-															</li>
-															<li>
-																<span class="comment" data-toggle="tooltip" title="Comments">
-																	<i class="fa fa-comments-o"></i>
-																	<ins>52</ins>
-																</span>
-															</li>
-															<li>
-																<span class="like" data-toggle="tooltip" title="like">
-																	<i class="ti-heart"></i>
-																	<ins>2.2k</ins>
-																</span>
-															</li>
-															<li>
-																<span class="dislike" data-toggle="tooltip" title="dislike">
-																	<i class="ti-heart-broken"></i>
-																	<ins>200</ins>
-																</span>
-															</li>
-															<li class="social-media">
-																<div class="menu">
-																<div class="btn trigger"><i class="fa fa-share-alt"></i></div>
-																<div class="rotater">
-																	<div class="btn btn-icon"><a href="#" title=""><i class="fa fa-html5"></i></a></div>
-																</div>
-																<div class="rotater">
-																	<div class="btn btn-icon"><a href="#" title=""><i class="fa fa-facebook"></i></a></div>
-																</div>
-																<div class="rotater">
-																	<div class="btn btn-icon"><a href="#" title=""><i class="fa fa-google-plus"></i></a></div>
-																</div>
-																<div class="rotater">
-																	<div class="btn btn-icon"><a href="#" title=""><i class="fa fa-twitter"></i></a></div>
-																</div>
-																<div class="rotater">
-																	<div class="btn btn-icon"><a href="#" title=""><i class="fa fa-css3"></i></a></div>
-																</div>
-																<div class="rotater">
-																	<div class="btn btn-icon"><a href="#" title=""><i class="fa fa-instagram"></i></a>
-																	</div>
-																</div>
-																	<div class="rotater">
-																	<div class="btn btn-icon"><a href="#" title=""><i class="fa fa-dribbble"></i></a>
-																	</div>
-																</div>
-																<div class="rotater">
-																	<div class="btn btn-icon"><a href="#" title=""><i class="fa fa-pinterest"></i></a>
-																	</div>
-																</div>
-
-																</div>
-															</li>
-														</ul>
-													</div>
-													<div class="description">
-														
-														<p>
-															Curabitur Lonely Cat Enjoying in Summer <a href="#" title="">#mypage</a> ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc,
-														</p>
-													</div>
-												</div>
-											</div>
-											<div class="coment-area">
-												<ul class="we-comet">
-													<li>
-														<div class="comet-avatar">
-															<img src="{% static 'connexion/images/resources/comet-1.jpg' %}" alt="">
-														</div>
-														<div class="we-comment">
-															<div class="coment-head">
-																<h5><a href="time-line.html" title="">Jason borne</a></h5>
-																<span>1 year ago</span>
-																<a class="we-reply" href="#" title="Reply"><i class="fa fa-reply"></i></a>
-															</div>
-															<p>we are working for the dance and sing songs. this video is very awesome for the youngster. please vote this video and like our channel</p>
-														</div>
-
-													</li>
-													<li>
-														<div class="comet-avatar">
-															<img src="{% static 'connexion/images/resources/comet-2.jpg' %}" alt="">
-														</div>
-														<div class="we-comment">
-															<div class="coment-head">
-																<h5><a href="time-line.html" title="">Sophia</a></h5>
-																<span>1 week ago</span>
-																<a class="we-reply" href="#" title="Reply"><i class="fa fa-reply"></i></a>
-															</div>
-															<p>we are working for the dance and sing songs. this video is very awesome for the youngster.
-																<i class="em em-smiley"></i>
-															</p>
-														</div>
-													</li>
-													<li>
-														<a href="#" title="" class="showmore underline">more comments</a>
-													</li>
-													<li class="post-comment">
-														<div class="comet-avatar">
-															<img src="{% static 'connexion/images/resources/comet-2.jpg' %}" alt="">
-														</div>
-														<div class="post-comt-box">
-															<form method="post">
-																<textarea placeholder="Post your comment"></textarea>
-																<div class="add-smiles">
-																	<span class="em em-expressionless" title="add icon"></span>
-																</div>
-																<div class="smiles-bunch">
-																	<i class="em em---1"></i>
-																	<i class="em em-smiley"></i>
-																	<i class="em em-anguished"></i>
-																	<i class="em em-laughing"></i>
-																	<i class="em em-angry"></i>
-																	<i class="em em-astonished"></i>
-																	<i class="em em-blush"></i>
-																	<i class="em em-disappointed"></i>
-																	<i class="em em-worried"></i>
-																	<i class="em em-kissing_heart"></i>
-																	<i class="em em-rage"></i>
-																	<i class="em em-stuck_out_tongue"></i>
-																</div>
-																<button type="submit"></button>
-															</form>	
-														</div>
-													</li>
-												</ul>
-											</div>
-										</div>
-									</div>
-									<div class="central-meta item">
-										<div class="user-post">
-											<div class="friend-info">
-												<figure>
-													<img alt="" src="{% static 'connexion/images/resources/friend-avatar10.jpg' %}">
-												</figure>
-												<div class="friend-name">
-													<ins><a title="" href="time-line.html">Janice Griffith</a></ins>
-													<span>published: june,2 2018 19:PM</span>
-												</div>
-												<div class="description">
-														
-														<p>
-															Curabitur World's most beautiful car in <a title="" href="#">#test drive booking !</a> the most beatuiful car available in america and the saudia arabia, you can book your test drive by our official website
-														</p>
-													</div>
-												<div class="post-meta">
-													<div class="linked-image align-left">
-														<a title="" href="#"><img alt="" src="{% static 'connexion/images/resources/page1.jpg' %}"></a>
-													</div>
-													<div class="detail">
-														<span>Love Maid - ChillGroves</span>
-														<p>Lorem ipsum dolor sit amet, consectetur ipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua... </p>
-														<a title="" href="#">www.sample.com</a>
-													</div>		
-													<div class="we-video-info">
-														<ul>
-															<li>
-																<span class="views" data-toggle="tooltip" title="views">
-																	<i class="fa fa-eye"></i>
-																	<ins>1.2k</ins>
-																</span>
-															</li>
-															<li>
-																<span class="comment" data-toggle="tooltip" title="Comments">
-																	<i class="fa fa-comments-o"></i>
-																	<ins>52</ins>
-																</span>
-															</li>
-															<li>
-																<span class="like" data-toggle="tooltip" title="like">
-																	<i class="ti-heart"></i>
-																	<ins>2.2k</ins>
-																</span>
-															</li>
-															<li>
-																<span class="dislike" data-toggle="tooltip" title="dislike">
-																	<i class="ti-heart-broken"></i>
-																	<ins>200</ins>
-																</span>
-															</li>
-															<li class="social-media">
-																<div class="menu">
-																<div class="btn trigger"><i class="fa fa-share-alt"></i></div>
-																<div class="rotater">
-																	<div class="btn btn-icon"><a href="#" title=""><i class="fa fa-html5"></i></a></div>
-																</div>
-																<div class="rotater">
-																	<div class="btn btn-icon"><a href="#" title=""><i class="fa fa-facebook"></i></a></div>
-																</div>
-																<div class="rotater">
-																	<div class="btn btn-icon"><a href="#" title=""><i class="fa fa-google-plus"></i></a></div>
-																</div>
-																<div class="rotater">
-																	<div class="btn btn-icon"><a href="#" title=""><i class="fa fa-twitter"></i></a></div>
-																</div>
-																<div class="rotater">
-																	<div class="btn btn-icon"><a href="#" title=""><i class="fa fa-css3"></i></a></div>
-																</div>
-																<div class="rotater">
-																	<div class="btn btn-icon"><a href="#" title=""><i class="fa fa-instagram"></i></a>
-																	</div>
-																</div>
-																	<div class="rotater">
-																	<div class="btn btn-icon"><a href="#" title=""><i class="fa fa-dribbble"></i></a>
-																	</div>
-																</div>
-																<div class="rotater">
-																	<div class="btn btn-icon"><a href="#" title=""><i class="fa fa-pinterest"></i></a>
-																	</div>
-																</div>
-
-																</div>
-															</li>
-														</ul>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-									</div>
-								
-									{% endcomment %}
+									{% endfor %}
 								</div><!-- centerl meta -->
 							
 							<div class="col-lg-3">
@@ -821,7 +344,9 @@
 												</div>
 											</div>
 										</div>
+										</div>
 									</div><!-- page like widget -->
+									
 									<div class="widget">
 										<div class="banner medium-opacity bluesh">
 											<div class="bg-image" style="background-image: url({% static 'connexion/images/resources/baner-widgetbg.jpg)' %}"></div>
@@ -852,92 +377,7 @@
 													<i><a href="#" class="__cf_email__" >gaetan.s118@gmail.com</a></i>
 												</div>
 											</li>
-											{% comment %}  
-											<li>
-												<figure>
-													<img src="{% static 'connexion/images/resources/friend-avatar2.jpg' %}" alt="">
-													<span class="status f-away"></span>
-												</figure>
-												<div class="friendz-meta">
-													<a href="time-line.html">Sarah Loren</a>
-													<i><a href="https://wpkixx.com/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="b4d6d5c6dad1c7f4d3d9d5ddd89ad7dbd9">[email&#160;protected]</a></i>
-												</div>
-											</li>
-											<li>
-												<figure>
-													<img src="{% static 'connexion/images/resources/friend-avatar3.jpg' %}" alt="">
-													<span class="status f-off"></span>
-												</figure>
-												<div class="friendz-meta">
-													<a href="time-line.html">jason borne</a>
-													<i><a href="https://wpkixx.com/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="1d777c6e72737f5d7a707c7471337e7270">[email&#160;protected]</a></i>
-												</div>
-											</li>
-											<li>
-												<figure>
-													<img src="{% static 'connexion/images/resources/friend-avatar4.jpg' %}" alt="">
-													<span class="status f-off"></span>
-												</figure>
-												<div class="friendz-meta">
-													<a href="time-line.html">Cameron diaz</a>
-													<i><a href="https://wpkixx.com/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="bed4dfcdd1d0dcfed9d3dfd7d290ddd1d3">[email&#160;protected]</a></i>
-												</div>
-											</li>
-											<li>
-												
-												<figure>
-													<img src="{% static 'connexion/images/resources/friend-avatar5.jpg' %}" alt="">
-													<span class="status f-online"></span>
-												</figure>
-												<div class="friendz-meta">
-													<a href="time-line.html">daniel warber</a>
-													<i><a href="https://wpkixx.com/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="553f34263a3b37153238343c397b363a38">[email&#160;protected]</a></i>
-												</div>
-											</li>
-											<li>
-												
-												<figure>
-													<img src="{% static 'connexion/images/resources/friend-avatar6.jpg' %}" alt="">
-													<span class="status f-away"></span>
-												</figure>
-												<div class="friendz-meta">
-													<a href="time-line.html">andrew</a>
-													<i><a href="https://wpkixx.com/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="5933382a36373b193e34383035773a3634">[email&#160;protected]</a></i>
-												</div>
-											</li>
-											<li>
-												
-												<figure>
-													<img src="{% static 'connexion/images/resources/friend-avatar7.jpg' %}" alt="">
-													<span class="status f-off"></span>
-												</figure>
-												<div class="friendz-meta">
-													<a href="time-line.html">amy watson</a>
-													<i><a href="https://wpkixx.com/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="5933382a36373b193e34383035773a3634">[email&#160;protected]</a></i>
-												</div>
-											</li>
-											<li>
-												
-												<figure>
-													<img src="{% static 'connexion/images/resources/friend-avatar5.jpg' %}" alt="">
-													<span class="status f-online"></span>
-												</figure>
-												<div class="friendz-meta">
-													<a href="time-line.html">daniel warber</a>
-													<i><a href="https://wpkixx.com/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="dbb1baa8b4b5b99bbcb6bab2b7f5b8b4b6">[email&#160;protected]</a></i>
-												</div>
-											</li>
-											<li>
-												
-												<figure>
-													<img src="{% static 'connexion/images/resources/friend-avatar2.jpg' %}" alt="">
-													<span class="status f-away"></span>
-												</figure>
-												<div class="friendz-meta">
-													<a href="time-line.html">Sarah Loren</a>
-													<i><a href="https://wpkixx.com/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2644475448435566414b474f4a0845494b">[email&#160;protected]</a></i>
-												</div>
-											</li>{% endcomment %}
+										
 										</ul>
 										<div class="chat-box">
 											<div class="chat-head">
